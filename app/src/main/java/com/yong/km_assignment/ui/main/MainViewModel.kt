@@ -20,7 +20,9 @@ class MainViewModel: ViewModel() {
     fun getRouteList() {
         viewModelScope.launch {
             repositoryList.getRouteList().let {
-                _routeList.postValue(it)
+                if(it != null) {
+                    _routeList.postValue(it)
+                }
             }
         }
     }
@@ -30,7 +32,9 @@ class MainViewModel: ViewModel() {
 
         viewModelScope.launch {
             repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
-                Log.d("RouteDetail", "Result is ${it}")
+                if(it != null) {
+                    Log.d("RouteDetail", "Result is ${it}")
+                }
             }
         }
     }
