@@ -3,13 +3,13 @@ package com.yong.km_assignment.data.model
 import com.google.gson.annotations.SerializedName
 
 data class RouteList(
-    @SerializedName("routeList")
-    val locations: List<RouteListItem>
+    @SerializedName("locations")
+    val routeList: List<RouteListItem>
 )
 
 data class RouteListItem(
-    @SerializedName("routeFrom")
-    val origin: String,
-    @SerializedName("routeTo")
-    val destination: String
+    @SerializedName("origin")
+    val routeFrom: String,
+    @SerializedName("destination")
+    val routeTo: String
 )
