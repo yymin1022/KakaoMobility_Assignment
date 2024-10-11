@@ -28,8 +28,10 @@ android {
         android.buildFeatures.buildConfig = true
         val apiKey: String = localProperties.getProperty("API_KEY", "")
         val apiUrl: String = localProperties.getProperty("API_URL", "")
+        val kakaoKey: String = localProperties.getProperty("KAKAO_SDK_KEY", "")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
         buildConfigField("String", "API_URL", "\"$apiUrl\"")
+        buildConfigField("String", "KAKAO_SDK_KEY", "\"$kakaoKey\"")
     }
 
     buildTypes {
