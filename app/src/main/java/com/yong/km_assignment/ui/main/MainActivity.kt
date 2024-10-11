@@ -2,6 +2,7 @@ package com.yong.km_assignment.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,21 +33,22 @@ class MainActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
+                val routeDetail = viewModel.routeDetail.observeAsState()
                 val routeList = viewModel.routeList.observeAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     routeList.value?.let {
                         RouteList(
                             routeList = it,
                             modifier = Modifier.padding(innerPadding),
-                            onRouteItemClick = { route ->
-                                viewModel.onRouteItemClick(route) { res ->
-                                    if(res) {
-                                        startActivity(Intent(applicationContext, MapviewActivity::class.java))
-                                    }
-                                }
-                            }
+                            onRouteItemClick = { route -> viewModel.getRouteDetail(route) }
                         )
                     }
+                }
+
+                if(routeDetail.value != null) {
+                    startActivity(Intent(applicationContext, MapviewActivity::class.java))
+                } else {
+                    Log.d("Route List", "Route is Null")
                 }
             }
         }
@@ -78,9 +80,7 @@ fun RouteItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                onClick(route)
-            }
+            .clickable { onClick(route) }
             .padding(16.dp)
     ) {
         Text(text = "Origin: ${route.routeFrom}")

@@ -15,12 +15,10 @@ import kotlinx.coroutines.launch
 class MainViewModel: ViewModel() {
     private val _repositoryDetail = RouteDetailRepository()
     private val _repositoryList = RouteListRepository()
+    private val _routeDetail: MutableLiveData<List<RouteDetail>?> = MutableLiveData()
     private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
+    val routeDetail: LiveData<List<RouteDetail>?> = _routeDetail
     val routeList: LiveData<RouteList> = _routeList
-
-    private suspend fun getRouteDetail(route: RouteListItem): List<RouteDetail>? {
-        return _repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo)
-    }
 
     fun getRouteList() {
         viewModelScope.launch {
@@ -32,20 +30,10 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun onRouteItemClick(
-        route: RouteListItem,
-        onResult: (Boolean) -> Unit
-    ) {
-        Log.d("RouteList", "Clicked ${route.routeFrom} -> ${route.routeTo}")
-
+    fun getRouteDetail(route: RouteListItem) {
         viewModelScope.launch {
-            getRouteDetail(route).let {
-                if(it != null) {
-                    Log.d("RouteDetail", "Result is $it")
-                    onResult(true)
-                } else {
-                    onResult(false)
-                }
+            _repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
+                _routeDetail.postValue(it)
             }
         }
     }
