@@ -17,6 +17,9 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.kakao.vectormap.camera.CameraAnimation
+import com.kakao.vectormap.camera.CameraUpdateFactory.newCenterPosition
+import com.kakao.vectormap.camera.CameraUpdateFactory.zoomTo
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
@@ -104,6 +107,12 @@ fun KakaoMapView(routeDetail: List<RouteDetail>, modifier: Modifier = Modifier) 
                             val options = RouteLineOptions.from(mapRouteSegment)
                             mapLayer.addRouteLine(options)
                         }
+
+                        val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
+                        val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
+                        val latlngCenter = LatLng.from((latlngFrom[1].toDouble() + latlngTo[1].toDouble()) / 2, (latlngFrom[0].toDouble() + latlngTo[0].toDouble()) / 2)
+                        kakaoMap.moveCamera(zoomTo(10))
+                        kakaoMap.moveCamera(newCenterPosition(latlngCenter), CameraAnimation.from(500, true, true))
                     }
                 }
             )
