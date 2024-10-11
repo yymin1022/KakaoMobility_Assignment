@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.data.repository.RouteDetailRepository
@@ -16,6 +17,10 @@ class MainViewModel: ViewModel() {
     private val repositoryList = RouteListRepository()
     private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
     val routeList: LiveData<RouteList> = _routeList
+
+    private suspend fun getRouteDetail(route: RouteListItem): List<RouteDetail>? {
+        return repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo)
+    }
 
     fun getRouteList() {
         viewModelScope.launch {
@@ -31,7 +36,7 @@ class MainViewModel: ViewModel() {
         Log.d("RouteList", "Clicked ${route.routeFrom} -> ${route.routeTo}")
 
         viewModelScope.launch {
-            repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
+            getRouteDetail(route).let {
                 if(it != null) {
                     Log.d("RouteDetail", "Result is $it")
                     onResult(true)
