@@ -7,23 +7,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
+import com.yong.km_assignment.data.repository.RouteDetailRepository
 import com.yong.km_assignment.data.repository.RouteListRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val repository = RouteListRepository()
+    private val repositoryDetail = RouteDetailRepository()
+    private val repositoryList = RouteListRepository()
     private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
     val routeList: LiveData<RouteList> = _routeList
 
     fun getRouteList() {
         viewModelScope.launch {
-            repository.getRouteList().let {
+            repositoryList.getRouteList().let {
                 _routeList.postValue(it)
             }
         }
     }
 
     fun onRouteItemClick(route: RouteListItem) {
-        Log.d("RouteList", "${route.routeFrom} -> ${route.routeTo}")
+        Log.d("RouteList", "Clicked ${route.routeFrom} -> ${route.routeTo}")
+
+        viewModelScope.launch {
+            repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
+                Log.d("RouteDetail", "Result is ${it}")
+            }
+        }
     }
 }
