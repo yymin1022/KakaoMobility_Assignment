@@ -24,10 +24,12 @@ android {
         if (localPropertiesFile.exists()) {
             localProperties.load(localPropertiesFile.inputStream())
         }
-        
+
         android.buildFeatures.buildConfig = true
         val apiKey: String = localProperties.getProperty("API_KEY", "")
+        val apiUrl: String = localProperties.getProperty("API_URL", "")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "API_URL", "\"$apiUrl\"")
     }
 
     buildTypes {
