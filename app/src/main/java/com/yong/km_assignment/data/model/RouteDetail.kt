@@ -2,7 +2,7 @@ package com.yong.km_assignment.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiRouteDetail(
+data class RouteDetail(
     @SerializedName("routePointList")
     val points: String,
     @SerializedName("routeTraffic")

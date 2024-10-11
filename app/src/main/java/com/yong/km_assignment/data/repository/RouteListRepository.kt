@@ -1,14 +1,20 @@
 package com.yong.km_assignment.data.repository
 
-import com.yong.km_assignment.data.model.ApiResult
+import android.util.Log
+import com.yong.km_assignment.data.api.RouteApi
 import com.yong.km_assignment.data.model.RouteList
+import com.yong.km_assignment.util.ApiUtil
 
 interface RouteListRepository {
-    fun getRouteList(): RouteList
+    suspend fun getRouteList(): RouteList
 }
 
 class DefaultRouteListRepository: RouteListRepository {
-    override fun getRouteList(): RouteList {
-        return RouteList(ApiResult.API_OK, listOf())
+    private val api: RouteApi = ApiUtil.getRouteApi()
+    override suspend fun getRouteList(): RouteList {
+        api.getRouteList().let {
+            Log.d("RouteList Repository", it.body().toString())
+        }
+        return RouteList(listOf())
     }
 }

@@ -2,12 +2,12 @@ package com.yong.km_assignment.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiRouteList(
+data class RouteList(
     @SerializedName("routeList")
-    val locations: List<ApiRouteListItem>
+    val locations: List<RouteListItem>
 )
 
-data class ApiRouteListItem(
+data class RouteListItem(
     @SerializedName("routeFrom")
     val origin: String,
     @SerializedName("routeTo")
