@@ -14,15 +14,15 @@ interface RouteApi {
     suspend fun getRouteDetail(
         @Query("origin") origin: String,
         @Query("destination") destination: String
-    ): Response<List<RouteDetail>>
+    ): Response<List<RouteDetail>?>
 
     @Headers("Content-Type: application/json")
     @GET("/api/v1/coding-assignment/distance-time")
     suspend fun getRouteInfo(
         @Query("origin") origin: String,
         @Query("destination") destination: String
-    ): Response<RouteInfo>
+    ): Response<RouteInfo?>
 
     @GET("/api/v1/coding-assignment/locations")
-    suspend fun getRouteList(): Response<RouteList>
+    suspend fun getRouteList(): Response<RouteList?>
 }
