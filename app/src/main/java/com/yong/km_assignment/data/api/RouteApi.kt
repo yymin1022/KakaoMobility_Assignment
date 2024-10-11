@@ -12,7 +12,7 @@ interface RouteApi {
     @Headers(
         "Authorization: API_KEY",
         "Content-Type: application/json")
-    @GET("")
+    @GET("/api/v1/coding-assignment/routes")
     suspend fun getRouteDetail(
         @Query("origin") origin: String,
         @Query("destination") destination: String
@@ -21,13 +21,13 @@ interface RouteApi {
     @Headers(
         "Authorization: API_KEY",
         "Content-Type: application/json")
-    @GET("")
+    @GET("/api/v1/coding-assignment/distance-time")
     suspend fun getRouteInfo(
         @Query("origin") origin: String,
         @Query("destination") destination: String
     ): Response<RouteInfo>
 
     @Headers("Authorization: API_KEY")
-    @GET("")
+    @GET("/api/v1/coding-assignment/locations")
     suspend fun getRouteList(): Response<RouteList>
 }
