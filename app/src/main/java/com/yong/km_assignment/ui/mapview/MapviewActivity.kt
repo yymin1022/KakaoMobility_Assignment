@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
+import com.kakao.vectormap.MapView
 
 class MapviewActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +22,12 @@ class MapviewActivity : ComponentActivity() {
 
 @Composable
 fun KakaoMapView(modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello MapView!",
-        modifier = modifier
+    AndroidView(
+        factory = { context ->
+            MapView(context).apply {
+
+            }
+        },
+        modifier = modifier.fillMaxSize()
     )
 }
