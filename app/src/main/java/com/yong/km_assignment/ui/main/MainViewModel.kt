@@ -27,13 +27,16 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun onRouteItemClick(route: RouteListItem) {
+    fun onRouteItemClick(route: RouteListItem, onResult: (Boolean) -> Unit) {
         Log.d("RouteList", "Clicked ${route.routeFrom} -> ${route.routeTo}")
 
         viewModelScope.launch {
             repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
                 if(it != null) {
                     Log.d("RouteDetail", "Result is $it")
+                    onResult(true)
+                } else {
+                    onResult(false)
                 }
             }
         }

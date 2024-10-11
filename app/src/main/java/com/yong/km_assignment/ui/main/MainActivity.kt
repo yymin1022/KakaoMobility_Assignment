@@ -1,5 +1,6 @@
 package com.yong.km_assignment.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
+import com.yong.km_assignment.ui.mapview.MapviewActivity
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 
 class MainActivity: ComponentActivity() {
@@ -37,7 +39,11 @@ class MainActivity: ComponentActivity() {
                             routeList = it,
                             modifier = Modifier.padding(innerPadding),
                             onRouteItemClick = { route ->
-                                viewModel.onRouteItemClick(route)
+                                viewModel.onRouteItemClick(route) { res ->
+                                    if(res) {
+                                        startActivity(Intent(applicationContext, MapviewActivity::class.java))
+                                    }
+                                }
                             }
                         )
                     }
