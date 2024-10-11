@@ -32,7 +32,10 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun onRouteItemClick(route: RouteListItem, onResult: (Boolean) -> Unit) {
+    fun onRouteItemClick(
+        route: RouteListItem,
+        onResult: (Boolean) -> Unit
+    ) {
         Log.d("RouteList", "Clicked ${route.routeFrom} -> ${route.routeTo}")
 
         viewModelScope.launch {
