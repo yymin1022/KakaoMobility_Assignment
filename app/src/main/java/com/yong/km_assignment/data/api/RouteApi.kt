@@ -9,25 +9,20 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface RouteApi {
-    @Headers(
-        "Authorization: API_KEY",
-        "Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     @GET("/api/v1/coding-assignment/routes")
     suspend fun getRouteDetail(
         @Query("origin") origin: String,
         @Query("destination") destination: String
     ): Response<RouteDetail>
 
-    @Headers(
-        "Authorization: API_KEY",
-        "Content-Type: application/json")
+    @Headers("Content-Type: application/json")
     @GET("/api/v1/coding-assignment/distance-time")
     suspend fun getRouteInfo(
         @Query("origin") origin: String,
         @Query("destination") destination: String
     ): Response<RouteInfo>
 
-    @Headers("Authorization: API_KEY")
     @GET("/api/v1/coding-assignment/locations")
     suspend fun getRouteList(): Response<RouteList>
 }
