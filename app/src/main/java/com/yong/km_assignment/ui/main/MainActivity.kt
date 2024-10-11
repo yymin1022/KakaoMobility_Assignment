@@ -46,7 +46,9 @@ class MainActivity: ComponentActivity() {
                 }
 
                 if(routeDetail.value != null) {
-                    startActivity(Intent(applicationContext, MapviewActivity::class.java))
+                    val intent = Intent(applicationContext, MapviewActivity::class.java)
+                    intent.putExtra("RouteDetail", routeDetail.value?.toTypedArray())
+                    startActivity(intent)
                 } else {
                     Log.d("Route List", "Route is Null")
                 }
