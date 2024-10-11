@@ -6,9 +6,9 @@ import com.yong.km_assignment.util.ApiUtil
 
 class RouteListRepository {
     private val api: RouteApi = ApiUtil.getRouteApi()
-    suspend fun getRouteList(): RouteList {
-        api.getRouteList().let {
-            return it.body() as RouteList
+    suspend fun getRouteList(): RouteList? {
+        api.getRouteList().let { apiResult ->
+            return apiResult.body()
         }
     }
 }
