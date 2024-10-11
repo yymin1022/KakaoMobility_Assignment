@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteList
-import com.yong.km_assignment.data.repository.DefaultRouteListRepository
+import com.yong.km_assignment.data.repository.RouteListRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val repository = DefaultRouteListRepository()
+    private val repository = RouteListRepository()
     private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
     val routeList: LiveData<RouteList> = _routeList
 
