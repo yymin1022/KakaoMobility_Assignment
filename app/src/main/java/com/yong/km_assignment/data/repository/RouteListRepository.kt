@@ -14,7 +14,7 @@ class DefaultRouteListRepository: RouteListRepository {
     override suspend fun getRouteList(): RouteList {
         api.getRouteList().let {
             Log.d("RouteList Repository", it.body().toString())
+            return it.body() as RouteList
         }
-        return RouteList(listOf())
     }
 }
