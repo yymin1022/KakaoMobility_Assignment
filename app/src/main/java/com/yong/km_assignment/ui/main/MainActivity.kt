@@ -45,12 +45,10 @@ class MainActivity: ComponentActivity() {
                     }
                 }
 
-                if(routeDetail.value != null) {
+                routeDetail.value?.let {
                     val intent = Intent(applicationContext, MapviewActivity::class.java)
-                    intent.putExtra("RouteDetail", routeDetail.value?.toTypedArray())
+                    intent.putParcelableArrayListExtra("RouteDetail", ArrayList(it))
                     startActivity(intent)
-                } else {
-                    Log.d("Route List", "Route is Null")
                 }
             }
         }
