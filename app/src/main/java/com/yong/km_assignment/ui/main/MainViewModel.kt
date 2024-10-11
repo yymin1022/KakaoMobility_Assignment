@@ -23,7 +23,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun onItemClick(route: RouteListItem) {
+    fun onRouteItemClick(route: RouteListItem) {
         Log.d("RouteList", "${route.routeFrom} -> ${route.routeTo}")
     }
 }

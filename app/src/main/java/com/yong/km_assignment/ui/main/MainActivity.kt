@@ -36,8 +36,8 @@ class MainActivity: ComponentActivity() {
                         RouteList(
                             routeList = it,
                             modifier = Modifier.padding(innerPadding),
-                            onRouteClick = { route ->
-                                viewModel.onItemClick(route)
+                            onRouteItemClick = { route ->
+                                viewModel.onRouteItemClick(route)
                             }
                         )
                     }
@@ -53,13 +53,13 @@ class MainActivity: ComponentActivity() {
 fun RouteList(
     routeList: RouteList,
     modifier: Modifier = Modifier,
-    onRouteClick: (RouteListItem) -> Unit
+    onRouteItemClick: (RouteListItem) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         items(routeList.routeList) { route ->
-            RouteItem(route = route, onClick = onRouteClick)
+            RouteItem(route = route, onClick = onRouteItemClick)
         }
     }
 }
