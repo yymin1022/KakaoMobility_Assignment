@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KakaoMobility_Assignment</string>
+    <string name="title_activity_mapview">MapviewActivity</string>
 </resources>

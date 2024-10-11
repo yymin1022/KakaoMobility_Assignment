@@ -16,6 +16,11 @@
         android:theme="@style/Theme.KakaoMobility_Assignment"
         tools:targetApi="31">
         <activity
+            android:name=".ui.mapview.MapviewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_mapview"
+            android:theme="@style/Theme.KakaoMobility_Assignment" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
