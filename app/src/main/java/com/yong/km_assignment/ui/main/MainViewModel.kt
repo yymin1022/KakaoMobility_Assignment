@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteList
+import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.data.repository.RouteListRepository
 import kotlinx.coroutines.launch
 
@@ -22,7 +23,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun onItemClick(position: Int) {
-        Log.d("RouteList", "${routeList.value?.routeList?.get(position)}")
+    fun onItemClick(route: RouteListItem) {
+        Log.d("RouteList", "${route.routeFrom} -> ${route.routeTo}")
     }
 }

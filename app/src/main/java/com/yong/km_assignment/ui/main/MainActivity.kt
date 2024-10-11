@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +35,10 @@ class MainActivity: ComponentActivity() {
                     routeList.value?.let {
                         RouteList(
                             routeList = it,
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            onRouteClick = { route ->
+                                viewModel.onItemClick(route)
+                            }
                         )
                     }
                 }
@@ -46,22 +50,32 @@ class MainActivity: ComponentActivity() {
 }
 
 @Composable
-fun RouteList(routeList: RouteList, modifier: Modifier = Modifier) {
+fun RouteList(
+    routeList: RouteList,
+    modifier: Modifier = Modifier,
+    onRouteClick: (RouteListItem) -> Unit
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         items(routeList.routeList) { route ->
-            RouteItem(route = route)
+            RouteItem(route = route, onClick = onRouteClick)
         }
     }
 }
 
 @Composable
-fun RouteItem(route: RouteListItem) {
+fun RouteItem(
+    route: RouteListItem,
+    onClick: (RouteListItem) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .clickable {
+                onClick(route)
+            }
     ) {
         Text(text = "Origin: ${route.routeFrom}")
         Text(text = "Destination: ${route.routeTo}")
