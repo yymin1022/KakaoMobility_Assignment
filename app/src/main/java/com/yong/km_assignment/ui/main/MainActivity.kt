@@ -5,14 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import com.yong.km_assignment.data.model.RouteList
+import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 
 class MainActivity: ComponentActivity() {
@@ -25,10 +34,12 @@ class MainActivity: ComponentActivity() {
             KakaoMobility_AssignmentTheme {
                 val routeList = viewModel.routeList.observeAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    routeList.value?.let {
+                        RouteList(
+                            routeList = it,
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
                 }
             }
         }
@@ -38,17 +49,24 @@ class MainActivity: ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun RouteList(routeList: RouteList, modifier: Modifier = Modifier) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        items(routeList.routeList) { route ->
+            RouteItem(route = route)
+        }
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    KakaoMobility_AssignmentTheme {
-        Greeting("Android")
+fun RouteItem(route: RouteListItem) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(text = "Origin: ${route.routeFrom}")
+        Text(text = "Destination: ${route.routeTo}")
     }
 }
