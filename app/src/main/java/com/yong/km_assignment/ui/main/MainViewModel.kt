@@ -31,6 +31,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun getRouteDetail(route: RouteListItem) {
+        _routeDetail.postValue(null)
         viewModelScope.launch {
             _repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
                 _routeDetail.postValue(it)
