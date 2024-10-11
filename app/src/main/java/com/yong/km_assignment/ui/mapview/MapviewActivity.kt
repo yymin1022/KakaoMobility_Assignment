@@ -76,43 +76,8 @@ fun KakaoMapView(routeDetail: List<RouteDetail>, modifier: Modifier = Modifier) 
                     override fun onMapReady(kakaoMap: KakaoMap) {
                         Log.d("KakaoMapView", "Map is Ready")
 
-                        val mapLayer = kakaoMap.routeLineManager!!.layer
-                        val routeStyleNormal: RouteLineStylesSet = RouteLineStylesSet.from(
-                            "RouteLine",
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteUnknown.toArgb())),
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteJam.toArgb())),
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteDelay.toArgb())),
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteSlow.toArgb())),
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteNormal.toArgb())),
-                            RouteLineStyles.from(RouteLineStyle.from(15f, RouteBlock.toArgb()))
-                        )
-
-                        routeDetail.forEach { routeDetailItem ->
-                            val routePointList = routeDetailItem.routePointList.split(" ").map {
-                                val pointPair = it.split(",")
-                                LatLng.from(pointPair[1].toDouble(), pointPair[0].toDouble())
-                            }
-
-                            val mapRouteSegment = RouteLineSegment.from(routePointList)
-                                .setStyles(
-                                    when (routeDetailItem.routeTraffic) {
-                                        "UNKNOWN" -> routeStyleNormal.getStyles(0)
-                                        "JAM" -> routeStyleNormal.getStyles(1)
-                                        "DELAY" -> routeStyleNormal.getStyles(2)
-                                        "SLOW" -> routeStyleNormal.getStyles(3)
-                                        "NORMAL" -> routeStyleNormal.getStyles(4)
-                                        else -> routeStyleNormal.getStyles(5)
-                                    }
-                                )
-                            val options = RouteLineOptions.from(mapRouteSegment)
-                            mapLayer.addRouteLine(options)
-                        }
-
-                        val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
-                        val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
-                        val latlngCenter = LatLng.from((latlngFrom[1].toDouble() + latlngTo[1].toDouble()) / 2, (latlngFrom[0].toDouble() + latlngTo[0].toDouble()) / 2)
-                        kakaoMap.moveCamera(zoomTo(10))
-                        kakaoMap.moveCamera(newCenterPosition(latlngCenter), CameraAnimation.from(500, true, true))
+                        setKakaoMapCameraView(kakaoMap, routeDetail)
+                        setKakaoMapRouteLine(kakaoMap, routeDetail)
                     }
                 }
             )
@@ -121,4 +86,46 @@ fun KakaoMapView(routeDetail: List<RouteDetail>, modifier: Modifier = Modifier) 
         },
         modifier = modifier.fillMaxSize()
     )
+}
+
+fun setKakaoMapCameraView(kakaoMap: KakaoMap, routeDetail: List<RouteDetail>) {
+    val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
+    val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
+    val latlngCenter = LatLng.from((latlngFrom[1].toDouble() + latlngTo[1].toDouble()) / 2, (latlngFrom[0].toDouble() + latlngTo[0].toDouble()) / 2)
+    kakaoMap.moveCamera(zoomTo(10))
+    kakaoMap.moveCamera(newCenterPosition(latlngCenter), CameraAnimation.from(500, true, true))
+}
+
+fun setKakaoMapRouteLine(kakaoMap: KakaoMap, routeDetail: List<RouteDetail>) {
+    val mapLayer = kakaoMap.routeLineManager!!.layer
+    val routeStyleNormal: RouteLineStylesSet = RouteLineStylesSet.from(
+        "RouteLine",
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteUnknown.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteJam.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteDelay.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteSlow.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteNormal.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteBlock.toArgb()))
+    )
+
+    routeDetail.forEach { routeDetailItem ->
+        val routePointList = routeDetailItem.routePointList.split(" ").map {
+            val pointPair = it.split(",")
+            LatLng.from(pointPair[1].toDouble(), pointPair[0].toDouble())
+        }
+
+        val mapRouteSegment = RouteLineSegment.from(routePointList)
+            .setStyles(
+                when (routeDetailItem.routeTraffic) {
+                    "UNKNOWN" -> routeStyleNormal.getStyles(0)
+                    "JAM" -> routeStyleNormal.getStyles(1)
+                    "DELAY" -> routeStyleNormal.getStyles(2)
+                    "SLOW" -> routeStyleNormal.getStyles(3)
+                    "NORMAL" -> routeStyleNormal.getStyles(4)
+                    else -> routeStyleNormal.getStyles(5)
+                }
+            )
+        val options = RouteLineOptions.from(mapRouteSegment)
+        mapLayer.addRouteLine(options)
+    }
 }
