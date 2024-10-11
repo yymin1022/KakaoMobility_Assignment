@@ -33,7 +33,7 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo).let {
                 if(it != null) {
-                    Log.d("RouteDetail", "Result is ${it}")
+                    Log.d("RouteDetail", "Result is $it")
                 }
             }
         }
