@@ -78,10 +78,10 @@ fun RouteItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .clickable {
                 onClick(route)
             }
+            .padding(16.dp)
     ) {
         Text(text = "Origin: ${route.routeFrom}")
         Text(text = "Destination: ${route.routeTo}")
