@@ -55,8 +55,8 @@ android {
 
 dependencies {
     implementation("com.kakao.maps.open:android:2.11.9")
-    implementation(libs.hilt.android)
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

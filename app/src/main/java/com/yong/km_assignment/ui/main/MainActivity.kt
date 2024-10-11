@@ -14,9 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity: ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
