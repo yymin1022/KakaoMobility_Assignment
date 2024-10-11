@@ -13,18 +13,18 @@ import com.yong.km_assignment.data.repository.RouteListRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
-    private val repositoryDetail = RouteDetailRepository()
-    private val repositoryList = RouteListRepository()
+    private val _repositoryDetail = RouteDetailRepository()
+    private val _repositoryList = RouteListRepository()
     private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
     val routeList: LiveData<RouteList> = _routeList
 
     private suspend fun getRouteDetail(route: RouteListItem): List<RouteDetail>? {
-        return repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo)
+        return _repositoryDetail.getRouteDetail(route.routeFrom, route.routeTo)
     }
 
     fun getRouteList() {
         viewModelScope.launch {
-            repositoryList.getRouteList().let {
+            _repositoryList.getRouteList().let {
                 if(it != null) {
                     _routeList.postValue(it)
                 }
