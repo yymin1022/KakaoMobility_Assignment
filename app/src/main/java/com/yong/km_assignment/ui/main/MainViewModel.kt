@@ -23,6 +23,6 @@ class MainViewModel: ViewModel() {
     }
 
     fun onItemClick(position: Int) {
-        Log.d("RouteList", "${routeList.value?.locations?.get(position)}")
+        Log.d("RouteList", "${routeList.value?.routeList?.get(position)}")
     }
 }
