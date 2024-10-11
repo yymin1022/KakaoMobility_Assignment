@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
@@ -24,6 +25,7 @@ class MainActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
+                val routeList = viewModel.routeList.observeAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
@@ -32,6 +34,8 @@ class MainActivity: ComponentActivity() {
                 }
             }
         }
+
+        viewModel.getRouteList()
     }
 }
 
