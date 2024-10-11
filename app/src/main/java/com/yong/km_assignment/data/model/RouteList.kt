@@ -1,11 +1,15 @@
 package com.yong.km_assignment.data.model
 
-data class RouteList(
-    val status: ApiResult,
-    val routeList: List<RouteListItem>
+import com.google.gson.annotations.SerializedName
+
+data class ApiRouteList(
+    @SerializedName("routeList")
+    val locations: List<ApiRouteListItem>
 )
 
-data class RouteListItem(
-    val routeFrom: String,
-    val routeTo: String
+data class ApiRouteListItem(
+    @SerializedName("routeFrom")
+    val origin: String,
+    @SerializedName("routeTo")
+    val destination: String
 )

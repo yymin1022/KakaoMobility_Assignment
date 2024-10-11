@@ -1,18 +1,12 @@
 package com.yong.km_assignment.data.model
 
-data class RouteDetail(
-    val status: ApiResult,
-    val partList: List<RouteDetailPart>
-)
+import com.google.gson.annotations.SerializedName
 
-data class RouteDetailPart(
-    val pointList: List<RouteDetailPoint>,
-    val trafficState: TrafficState
-)
-
-data class RouteDetailPoint(
-    val lat: Double,
-    val lng: Double
+data class ApiRouteDetail(
+    @SerializedName("routePointList")
+    val points: String,
+    @SerializedName("routeTraffic")
+    val traffic_state: String
 )
 
 enum class TrafficState {
