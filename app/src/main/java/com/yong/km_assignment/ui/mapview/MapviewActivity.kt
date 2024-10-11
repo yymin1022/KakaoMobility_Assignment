@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,15 +14,21 @@ import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
+import com.yong.km_assignment.data.model.RouteDetail
 import java.lang.Exception
 
-class MapviewActivity : ComponentActivity() {
+class MapviewActivity: ComponentActivity() {
+    private val viewModel: MapviewViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             KakaoMapView(modifier = Modifier)
         }
+
+        val routeDetail: List<RouteDetail> = intent.getParcelableArrayListExtra<RouteDetail?>("RouteDetail")!!.toList()
+        viewModel.setRouteDetail(routeDetail)
     }
 }
 
