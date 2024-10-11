@@ -1,4 +1,4 @@
-package com.yong.km_assignment
+package com.yong.km_assignment.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
