@@ -50,15 +50,17 @@ class MapviewActivity: ComponentActivity() {
             }
         }
 
-        val routeDetail: List<RouteDetail>? = intent.getParcelableArrayListExtra("RouteDetail")
-        if(routeDetail != null) {
-            viewModel.setRouteDetail(routeDetail)
-        }
+        val routeFrom = intent.getStringExtra("routeFrom") ?: ""
+        val routeTo = intent.getStringExtra("routeTo") ?: ""
+        viewModel.getRouteDetail(routeFrom, routeTo)
     }
 }
 
 @Composable
-fun KakaoMapView(routeDetail: List<RouteDetail>, modifier: Modifier = Modifier) {
+fun KakaoMapView(
+    routeDetail: List<RouteDetail>,
+    modifier: Modifier = Modifier
+) {
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
@@ -88,7 +90,10 @@ fun KakaoMapView(routeDetail: List<RouteDetail>, modifier: Modifier = Modifier) 
     )
 }
 
-fun setKakaoMapCameraView(kakaoMap: KakaoMap, routeDetail: List<RouteDetail>) {
+fun setKakaoMapCameraView(
+    kakaoMap: KakaoMap,
+    routeDetail: List<RouteDetail>
+) {
     val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
     val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
     val latlngCenter = LatLng.from((latlngFrom[1].toDouble() + latlngTo[1].toDouble()) / 2, (latlngFrom[0].toDouble() + latlngTo[0].toDouble()) / 2)
@@ -96,7 +101,10 @@ fun setKakaoMapCameraView(kakaoMap: KakaoMap, routeDetail: List<RouteDetail>) {
     kakaoMap.moveCamera(newCenterPosition(latlngCenter), CameraAnimation.from(500, true, true))
 }
 
-fun setKakaoMapRouteLine(kakaoMap: KakaoMap, routeDetail: List<RouteDetail>) {
+fun setKakaoMapRouteLine(
+    kakaoMap: KakaoMap,
+    routeDetail: List<RouteDetail>
+) {
     val mapLayer = kakaoMap.routeLineManager!!.layer
     val routeStyleNormal: RouteLineStylesSet = RouteLineStylesSet.from(
         "RouteLine",
