@@ -1,5 +1,6 @@
 package com.yong.km_assignment.ui.mapview
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,11 +16,21 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.MapGravity
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory.newCenterPosition
 import com.kakao.vectormap.camera.CameraUpdateFactory.zoomTo
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.mapwidget.MapWidgetOptions
+import com.kakao.vectormap.mapwidget.component.GuiLayout
+import com.kakao.vectormap.mapwidget.component.GuiText
+import com.kakao.vectormap.mapwidget.component.Horizontal
+import com.kakao.vectormap.mapwidget.component.Orientation
+import com.kakao.vectormap.mapwidget.component.Vertical
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
@@ -34,6 +45,7 @@ import com.yong.km_assignment.ui.theme.RouteJam
 import com.yong.km_assignment.ui.theme.RouteNormal
 import com.yong.km_assignment.ui.theme.RouteSlow
 import com.yong.km_assignment.ui.theme.RouteUnknown
+
 
 class MapviewActivity: ComponentActivity() {
     private val viewModel: MapviewViewModel by viewModels()
@@ -82,6 +94,7 @@ fun KakaoMapView(
                     override fun onMapReady(kakaoMap: KakaoMap) {
                         Log.d("KakaoMapView", "Map is Ready")
 
+                        addRouteInfoView(kakaoMap, routeInfo!!)
                         setKakaoMapCameraView(kakaoMap, routeDetail)
                         setKakaoMapRouteLine(kakaoMap, routeDetail)
                     }
@@ -92,6 +105,32 @@ fun KakaoMapView(
         },
         modifier = modifier.fillMaxSize()
     )
+}
+
+fun addRouteInfoView(
+    kakaoMap: KakaoMap,
+    routeInfo: RouteInfo
+) {
+    val widgetLayout = GuiLayout(Orientation.Vertical)
+    widgetLayout.setAlign(Vertical.Center, Horizontal.Left)
+    widgetLayout.setPadding(50, 50, 50, 50)
+
+    val widgetTextTime = GuiText("시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60))
+    widgetTextTime.setAlign(Vertical.Center, Horizontal.Left)
+    widgetTextTime.setTextSize(40)
+    widgetLayout.addView(widgetTextTime)
+    val widgetTextDistance = GuiText("거리: %,.1fkm".format(routeInfo.routeDistance / 1000f))
+    widgetTextDistance.setAlign(Vertical.Center, Horizontal.Left)
+    widgetTextDistance.setTextSize(40)
+    widgetLayout.addView(widgetTextDistance)
+
+    val widgetOption = MapWidgetOptions.from("RouteInfo")
+    widgetOption.setRootView(widgetLayout)
+
+    kakaoMap.mapWidgetManager!!.mapWidgetLayer.let {
+        it.addMapWidget(widgetOption)
+        it.getMapWidget("RouteInfo")?.setPosition(MapGravity.BOTTOM or MapGravity.LEFT, 0f, 0f)
+    }
 }
 
 fun setKakaoMapCameraView(
