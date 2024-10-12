@@ -82,7 +82,7 @@ fun RouteItem(
             .clickable { onClick(route) }
             .padding(16.dp)
     ) {
-        Text(text = "Origin: ${route.routeFrom}")
-        Text(text = "Destination: ${route.routeTo}")
+        Text(text = "출발지: ${route.routeFrom}")
+        Text(text = "도착지: ${route.routeTo}")
     }
 }
