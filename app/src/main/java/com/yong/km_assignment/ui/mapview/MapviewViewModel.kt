@@ -5,18 +5,37 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteDetail
+import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.data.repository.RouteDetailRepository
+import com.yong.km_assignment.data.repository.RouteInfoRepository
 import kotlinx.coroutines.launch
 
 class MapviewViewModel: ViewModel() {
     private val _repositoryDetail = RouteDetailRepository()
+    private val _repositoryInfo = RouteInfoRepository()
     private val _routeDetail: MutableLiveData<List<RouteDetail>?> = MutableLiveData()
+    private val _routeInfo: MutableLiveData<RouteInfo?> = MutableLiveData()
     val routeDetail: LiveData<List<RouteDetail>?> = _routeDetail
+    val routeInfo: LiveData<RouteInfo?> = _routeInfo
 
-    fun getRouteDetail(routeFrom: String, routeTo: String) {
+    fun getRouteDetail(
+        routeFrom: String,
+        routeTo: String
+    ) {
         viewModelScope.launch {
             _repositoryDetail.getRouteDetail(routeFrom, routeTo).let {
                 _routeDetail.postValue(it)
+            }
+        }
+    }
+
+    fun getRouteInfo(
+        routeFrom: String,
+        routeTo: String
+    ) {
+        viewModelScope.launch {
+            _repositoryInfo.getRouteInfo(routeFrom, routeTo).let {
+                _routeInfo.postValue(it)
             }
         }
     }
