@@ -32,22 +32,20 @@ class MainActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
-                val routeDetail = viewModel.routeDetail.observeAsState()
                 val routeList = viewModel.routeList.observeAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     routeList.value?.let {
                         RouteList(
                             routeList = it,
                             modifier = Modifier.padding(innerPadding),
-                            onRouteItemClick = { route -> viewModel.getRouteDetail(route) }
+                            onRouteItemClick = { routeFrom, routeTo ->
+                                val intent = Intent(applicationContext, MapviewActivity::class.java)
+                                intent.putExtra("routeFrom", routeFrom)
+                                intent.putExtra("routeTo", routeTo)
+                                startActivity(intent)
+                            }
                         )
                     }
-                }
-
-                routeDetail.value?.let {
-                    val intent = Intent(applicationContext, MapviewActivity::class.java)
-                    intent.putParcelableArrayListExtra("RouteDetail", ArrayList(it))
-                    startActivity(intent)
                 }
             }
         }
@@ -60,7 +58,7 @@ class MainActivity: ComponentActivity() {
 fun RouteList(
     routeList: RouteList,
     modifier: Modifier = Modifier,
-    onRouteItemClick: (RouteListItem) -> Unit
+    onRouteItemClick: (String, String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -74,12 +72,12 @@ fun RouteList(
 @Composable
 fun RouteItem(
     route: RouteListItem,
-    onClick: (RouteListItem) -> Unit
+    onClick: (String, String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(route) }
+            .clickable { onClick(route.routeFrom, route.routeTo) }
             .padding(16.dp)
     ) {
         Text(text = "출발지: ${route.routeFrom}")
