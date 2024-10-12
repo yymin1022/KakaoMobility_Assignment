@@ -1,6 +1,5 @@
 package com.yong.km_assignment.ui.mapview
 
-import android.R
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import com.kakao.vectormap.KakaoMap
@@ -25,6 +25,8 @@ import com.kakao.vectormap.camera.CameraUpdateFactory.zoomTo
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.LabelTextBuilder
+import com.kakao.vectormap.label.LabelTextStyle
 import com.kakao.vectormap.mapwidget.MapWidgetOptions
 import com.kakao.vectormap.mapwidget.component.GuiLayout
 import com.kakao.vectormap.mapwidget.component.GuiText
@@ -95,6 +97,7 @@ fun KakaoMapView(
                         Log.d("KakaoMapView", "Map is Ready")
 
                         addRouteInfoView(kakaoMap, routeInfo!!)
+                        addRouteLabelView(kakaoMap, routeDetail)
                         setKakaoMapCameraView(kakaoMap, routeDetail)
                         setKakaoMapRouteLine(kakaoMap, routeDetail)
                     }
@@ -130,6 +133,28 @@ fun addRouteInfoView(
     kakaoMap.mapWidgetManager!!.mapWidgetLayer.let {
         it.addMapWidget(widgetOption)
         it.getMapWidget("RouteInfo")?.setPosition(MapGravity.BOTTOM or MapGravity.LEFT, 0f, 0f)
+    }
+}
+
+fun addRouteLabelView(
+    kakaoMap: KakaoMap,
+    routeDetail: List<RouteDetail>
+) {
+    val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
+    val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
+    val labelStyles = kakaoMap.labelManager!!.addLabelStyles(LabelStyles.from(LabelStyle.from(
+        LabelTextStyle.from(30, Color.Black.toArgb()))))
+    val labelOptionsFrom = LabelOptions.from(LatLng.from(latlngFrom[1].toDouble(), latlngFrom[0].toDouble())).let {
+        it.setStyles(labelStyles)
+        it.setTexts(LabelTextBuilder().setTexts("출발"))
+    }
+    val labelOptionsTo = LabelOptions.from(LatLng.from(latlngTo[1].toDouble(), latlngTo[0].toDouble())).let {
+        it.setStyles(labelStyles)
+        it.setTexts(LabelTextBuilder().setTexts("도착"))
+    }
+    kakaoMap.labelManager!!.layer?.let {
+        it.addLabel(labelOptionsFrom)
+        it.addLabel(labelOptionsTo)
     }
 }
 
