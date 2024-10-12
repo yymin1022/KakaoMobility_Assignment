@@ -20,8 +20,4 @@ class MapviewViewModel: ViewModel() {
             }
         }
     }
-
-    fun setRouteDetail(routeDetail: List<RouteDetail>) {
-        _routeDetail.postValue(routeDetail)
-    }
 }
