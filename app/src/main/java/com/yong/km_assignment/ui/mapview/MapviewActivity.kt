@@ -26,6 +26,7 @@ import com.kakao.vectormap.route.RouteLineStyle
 import com.kakao.vectormap.route.RouteLineStyles
 import com.kakao.vectormap.route.RouteLineStylesSet
 import com.yong.km_assignment.data.model.RouteDetail
+import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 import com.yong.km_assignment.ui.theme.RouteBlock
 import com.yong.km_assignment.ui.theme.RouteDelay
@@ -33,7 +34,6 @@ import com.yong.km_assignment.ui.theme.RouteJam
 import com.yong.km_assignment.ui.theme.RouteNormal
 import com.yong.km_assignment.ui.theme.RouteSlow
 import com.yong.km_assignment.ui.theme.RouteUnknown
-
 
 class MapviewActivity: ComponentActivity() {
     private val viewModel: MapviewViewModel by viewModels()
@@ -44,8 +44,9 @@ class MapviewActivity: ComponentActivity() {
         setContent {
             KakaoMobility_AssignmentTheme {
                 val routeDetail = viewModel.routeDetail.observeAsState()
+                val routeInfo = viewModel.routeInfo.observeAsState()
                 routeDetail.value?.let {
-                    KakaoMapView(routeDetail = it, modifier = Modifier)
+                    KakaoMapView(routeDetail = it, routeInfo = routeInfo.value, modifier = Modifier)
                 }
             }
         }
@@ -53,14 +54,17 @@ class MapviewActivity: ComponentActivity() {
         val routeFrom = intent.getStringExtra("routeFrom") ?: ""
         val routeTo = intent.getStringExtra("routeTo") ?: ""
         viewModel.getRouteDetail(routeFrom, routeTo)
+        viewModel.getRouteInfo(routeFrom, routeTo)
     }
 }
 
 @Composable
 fun KakaoMapView(
     routeDetail: List<RouteDetail>,
+    routeInfo: RouteInfo?,
     modifier: Modifier = Modifier
 ) {
+    Log.d("MapView", "${routeInfo?.routeTime} / ${routeInfo?.routeDistance}")
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
