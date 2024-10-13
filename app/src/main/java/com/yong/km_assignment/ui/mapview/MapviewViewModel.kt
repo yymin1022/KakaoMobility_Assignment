@@ -25,7 +25,7 @@ class MapviewViewModel: ViewModel() {
     ) {
         viewModelScope.launch {
             _repositoryDetail.getRouteDetail(routeFrom, routeTo).let {
-                routeDetail = it
+                routeDetail = it.body()
                 _routeDetailLoaded.postValue(true)
             }
         }
@@ -37,7 +37,7 @@ class MapviewViewModel: ViewModel() {
     ) {
         viewModelScope.launch {
             _repositoryInfo.getRouteInfo(routeFrom, routeTo).let {
-                _routeInfo.postValue(it)
+                _routeInfo.postValue(it.body())
             }
         }
     }

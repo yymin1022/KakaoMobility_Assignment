@@ -16,8 +16,8 @@ class MainViewModel: ViewModel() {
     fun getRouteList() {
         viewModelScope.launch {
             _repositoryList.getRouteList().let {
-                if(it != null) {
-                    _routeList.postValue(it)
+                if(it.body() != null) {
+                    _routeList.postValue(it.body())
                 }
             }
         }
