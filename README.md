@@ -55,7 +55,7 @@ API 호출을 위한 `Retrofit2` 인스턴스를 관리하는 `ApiUtil` 및 디�
 <div style="display: flex; flex-direction: row; justify-content: space-evenly">
 	<img src="readme_image/app_1.png" width="30%">
 	<img src="readme_image/app_2.png" width="30%">
-	<img src="readme_image/app_2.png" width="30%">
+	<img src="readme_image/app_3.png" width="30%">
 </div>
 
 ## 개발자
