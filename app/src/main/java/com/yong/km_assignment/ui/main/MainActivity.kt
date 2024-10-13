@@ -26,6 +26,7 @@ import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.mapview.MapviewActivity
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
+import com.yong.km_assignment.util.NetworkUtil
 
 class MainActivity: ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
@@ -35,8 +36,24 @@ class MainActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
-                val routeListLoaded = viewModel.routeListLoaded.observeAsState()
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    if(!NetworkUtil.isNetworkAvailable(applicationContext)) {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                fontSize = 20.sp,
+                                text = "네트워크 연결을 확인해주세요."
+                            )
+                        }
+                        return@Scaffold
+                    }
+
+                    val routeListLoaded = viewModel.routeListLoaded.observeAsState()
+                    viewModel.getRouteList()
                     routeListLoaded.value.let {
                         Box(
                             modifier = Modifier.fillMaxSize()
@@ -76,8 +93,6 @@ class MainActivity: ComponentActivity() {
                 }
             }
         }
-
-        viewModel.getRouteList()
     }
 }
 
