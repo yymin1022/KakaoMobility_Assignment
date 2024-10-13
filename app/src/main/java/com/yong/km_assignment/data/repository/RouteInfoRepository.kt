@@ -6,9 +6,9 @@ import com.yong.km_assignment.util.ApiUtil
 import retrofit2.Response
 
 class RouteInfoRepository {
-    private val api: RouteApi = ApiUtil.getRouteApi()
+    private val _api: RouteApi = ApiUtil.getRouteApi()
     suspend fun getRouteInfo(routeFrom: String, routeTo: String): Response<RouteInfo?> {
-        api.getRouteInfo(routeFrom, routeTo).let { apiResult ->
+        _api.getRouteInfo(routeFrom, routeTo).let { apiResult ->
             return apiResult
         }
     }
