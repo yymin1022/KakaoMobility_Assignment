@@ -13,10 +13,9 @@ import kotlinx.coroutines.launch
 class MapviewViewModel: ViewModel() {
     private val _repositoryDetail = RouteDetailRepository()
     private val _repositoryInfo = RouteInfoRepository()
-    private val _routeDetail: MutableLiveData<List<RouteDetail>?> = MutableLiveData()
     private val _routeDetailLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
     private val _routeInfo: MutableLiveData<RouteInfo?> = MutableLiveData()
-    val routeDetail: LiveData<List<RouteDetail>?> = _routeDetail
+    var routeDetail: List<RouteDetail>? = listOf()
     val routeDetailLoaded: LiveData<Boolean> = _routeDetailLoaded
     val routeInfo: LiveData<RouteInfo?> = _routeInfo
 
@@ -26,7 +25,7 @@ class MapviewViewModel: ViewModel() {
     ) {
         viewModelScope.launch {
             _repositoryDetail.getRouteDetail(routeFrom, routeTo).let {
-                _routeDetail.postValue(it)
+                routeDetail = it
                 _routeDetailLoaded.postValue(true)
             }
         }

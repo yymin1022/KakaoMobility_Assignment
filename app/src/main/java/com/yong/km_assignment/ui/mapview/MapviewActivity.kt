@@ -45,7 +45,6 @@ import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 import com.yong.km_assignment.ui.theme.*
 
-
 class MapviewActivity: ComponentActivity() {
     private val viewModel: MapviewViewModel by viewModels()
 
@@ -54,17 +53,17 @@ class MapviewActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
-                val routeDetail = viewModel.routeDetail.observeAsState()
                 val routeDetailLoaded = viewModel.routeDetailLoaded.observeAsState()
                 val routeInfo = viewModel.routeInfo.observeAsState()
-                routeDetail.value.let {
+                routeDetailLoaded.value.let {
                     Box(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        if (routeDetailLoaded.value == true) {
-                            if (it != null) {
+                        if (it == true) {
+                            val routeDetail = viewModel.routeDetail
+                            if (routeDetail != null) {
                                 KakaoMapView(
-                                    routeDetail = it,
+                                    routeDetail = routeDetail,
                                     routeInfo = routeInfo.value,
                                     modifier = Modifier
                                 )
@@ -78,12 +77,14 @@ class MapviewActivity: ComponentActivity() {
                                 }
                             } else {
                                 Text(
+                                    modifier = Modifier.align(Alignment.Center),
                                     fontSize = 20.sp,
                                     text = "경로 정보를 불러오지 못했습니다."
                                 )
                             }
                         } else {
                             Text(
+                                modifier = Modifier.align(Alignment.Center),
                                 fontSize = 20.sp,
                                 text = "경로 정보를 불러오는 중..."
                             )
