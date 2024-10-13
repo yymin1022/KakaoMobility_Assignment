@@ -50,6 +50,10 @@ class MapviewActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val routeFrom = intent.getStringExtra("routeFrom") ?: ""
+        val routeTo = intent.getStringExtra("routeTo") ?: ""
+
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
@@ -72,13 +76,14 @@ class MapviewActivity: ComponentActivity() {
                                         .fillMaxWidth()
                                         .padding(horizontal = 20.dp, vertical = 50.dp)
                                 ) {
+                                    viewModel.getRouteInfo(routeFrom, routeTo)
                                     RouteInfoView(routeInfo = routeInfo.value)
                                 }
                             } else {
                                 Text(
                                     modifier = Modifier.align(Alignment.Center),
                                     fontSize = 20.sp,
-                                    text = "경로 정보를 불러오지 못했습니다."
+                                    text = "경로 정보를 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
                                 )
                             }
                         } else {
@@ -93,10 +98,7 @@ class MapviewActivity: ComponentActivity() {
             }
         }
 
-        val routeFrom = intent.getStringExtra("routeFrom") ?: ""
-        val routeTo = intent.getStringExtra("routeTo") ?: ""
         viewModel.getRouteDetail(routeFrom, routeTo)
-        viewModel.getRouteInfo(routeFrom, routeTo)
     }
 }
 

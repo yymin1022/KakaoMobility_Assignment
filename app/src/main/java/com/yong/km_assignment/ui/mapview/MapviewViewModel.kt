@@ -18,6 +18,8 @@ class MapviewViewModel: ViewModel() {
     var routeDetail: List<RouteDetail>? = listOf()
     val routeDetailLoaded: LiveData<Boolean> = _routeDetailLoaded
     val routeInfo: LiveData<RouteInfo?> = _routeInfo
+    var errCode: Int = 0
+    var errMessage = "Success"
 
     fun getRouteDetail(
         routeFrom: String,
@@ -26,6 +28,14 @@ class MapviewViewModel: ViewModel() {
         viewModelScope.launch {
             _repositoryDetail.getRouteDetail(routeFrom, routeTo).let {
                 routeDetail = it.body()
+                if(it.body() == null) {
+                    errCode = it.code()
+                    errMessage = when(errCode) {
+                        404 -> "Not Found"
+                        500 -> "Server Error"
+                        else -> "Unknown Error"
+                    }
+                }
                 _routeDetailLoaded.postValue(true)
             }
         }
