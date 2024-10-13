@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -44,6 +45,7 @@ import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 import com.yong.km_assignment.ui.theme.*
 import com.yong.km_assignment.util.LogUtil.LogD
+import com.yong.km_assignment.util.NetworkUtil
 
 class MapviewActivity: ComponentActivity() {
     private val viewModel: MapviewViewModel by viewModels()
@@ -57,48 +59,66 @@ class MapviewActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
-                val routeDetailLoaded = viewModel.routeDetailLoaded.observeAsState()
-                val routeInfo = viewModel.routeInfo.observeAsState()
-                routeDetailLoaded.value.let {
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        if (it == true) {
-                            val routeDetail = viewModel.routeDetail
-                            if (routeDetail != null) {
-                                KakaoMapView(
-                                    routeDetail = routeDetail,
-                                    modifier = Modifier
-                                )
-                                Card(
-                                    modifier = Modifier
-                                        .align(Alignment.BottomCenter)
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 20.dp, vertical = 50.dp)
-                                ) {
-                                    viewModel.getRouteInfo(routeFrom, routeTo)
-                                    RouteInfoView(routeInfo = routeInfo.value)
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    if (!NetworkUtil.isNetworkAvailable(applicationContext)) {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                fontSize = 20.sp,
+                                text = "네트워크 연결을 확인해주세요."
+                            )
+                        }
+                        return@Scaffold
+                    }
+
+                    val routeDetailLoaded = viewModel.routeDetailLoaded.observeAsState()
+                    val routeInfo = viewModel.routeInfo.observeAsState()
+                    viewModel.getRouteDetail(routeFrom, routeTo)
+                    routeDetailLoaded.value.let {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                        ) {
+                            if (it == true) {
+                                val routeDetail = viewModel.routeDetail
+                                if (routeDetail != null) {
+                                    KakaoMapView(
+                                        routeDetail = routeDetail,
+                                        modifier = Modifier
+                                    )
+                                    Card(
+                                        modifier = Modifier
+                                            .align(Alignment.BottomCenter)
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 20.dp, vertical = 50.dp)
+                                    ) {
+                                        viewModel.getRouteInfo(routeFrom, routeTo)
+                                        RouteInfoView(routeInfo = routeInfo.value)
+                                    }
+                                } else {
+                                    Text(
+                                        modifier = Modifier.align(Alignment.Center),
+                                        fontSize = 20.sp,
+                                        text = "경로 정보를 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
+                                    )
                                 }
                             } else {
                                 Text(
                                     modifier = Modifier.align(Alignment.Center),
                                     fontSize = 20.sp,
-                                    text = "경로 정보를 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
+                                    text = "경로 정보를 불러오는 중..."
                                 )
                             }
-                        } else {
-                            Text(
-                                modifier = Modifier.align(Alignment.Center),
-                                fontSize = 20.sp,
-                                text = "경로 정보를 불러오는 중..."
-                            )
                         }
                     }
                 }
             }
         }
-
-        viewModel.getRouteDetail(routeFrom, routeTo)
     }
 }
 
