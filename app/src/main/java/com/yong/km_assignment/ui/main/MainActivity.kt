@@ -56,14 +56,16 @@ class MainActivity: ComponentActivity() {
                     viewModel.getRouteList()
                     routeListLoaded.value.let {
                         Box(
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
                         ) {
                             if (it == true) {
                                 val routeList = viewModel.routeList
                                 if (routeList != null) {
                                     RouteList(
                                         routeList = routeList,
-                                        modifier = Modifier.padding(innerPadding),
+                                        modifier = Modifier.fillMaxSize(),
                                         onRouteItemClick = { routeFrom, routeTo ->
                                             val intent = Intent(
                                                 applicationContext,
