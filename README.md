@@ -9,6 +9,17 @@
 	- RouteInfoRepository : 특정 경로의 시간/거리 정보를 다루는 Repository입니다.
 	- RouteListRepository : 전체 경로 목록을 다루는 Repository입니다.
 
+## Directory Structure [Kotlin]
+- `com/yong/km_assignment` : 프로젝트의 최상위 Package입니다.
+- `com/yong/km_assignment/data/api` : API 호출을 위한 `Retrofit2` 인터페이스가 위치합니다.
+- `com/yong/km_assignment/data/model` : 데이터 Model 클래스가 위치합니다.
+- `com/yong/km_assignment/data/repository` : 데이터 Repository 클래스가 위치합니다.
+- `com/yong/km_assignment/ui/main` : MainActivity 및 ViewModel 클래스가 위치합니다.
+- `com/yong/km_assignment/ui/mapview` : MapviewActivity 및 ViewModel 클래스가 위치합니다.
+- `com/yong/km_assignment/ui/theme` : 애플리케이션 전역의 Theme 소스코드가 위치합니다. Color 등의 속성을 정의하였습니다.
+- `com/yong/km_assignment/util` : 각종 Util 클래스가 위치합니다.
+
+
 ## How to Build
 1. Android Studio를 통해 본 프로젝트를 Open 합니다.
 2. `local.properties`에 다음과 같이 3개 환경변수를 지정합니다.
@@ -21,6 +32,7 @@
 	> API_KEY : API 서버에 접근하기 위한 API 키 값입니다.<br/>
 	> API_URL : API 서버의 Base URL 값입니다.<br/>
 	> KAKAO_SDK_KEY : 카카오맵 SDK에 연동하기 위한 Native App 키 값입니다.
+3. Gradle Sync 후 Build 합니다.
 
 ## Library
 - [AndroidX Compose](https://developer.android.com/jetpack/androidx/releases/compose)
