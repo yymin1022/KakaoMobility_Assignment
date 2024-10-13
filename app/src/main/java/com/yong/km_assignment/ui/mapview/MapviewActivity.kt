@@ -64,7 +64,9 @@ class MapviewActivity: ComponentActivity() {
                 ) { innerPadding ->
                     if (!NetworkUtil.isNetworkAvailable(applicationContext)) {
                         Box(
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
                         ) {
                             Text(
                                 modifier = Modifier.align(Alignment.Center),
