@@ -73,7 +73,7 @@ class MapviewActivity: ComponentActivity() {
                                         .fillMaxWidth()
                                         .padding(horizontal = 20.dp, vertical = 50.dp)
                                 ) {
-                                    RouteInfoView(routeInfo = routeInfo.value!!)
+                                    RouteInfoView(routeInfo = routeInfo.value)
                                 }
                             } else {
                                 Text(
@@ -103,19 +103,27 @@ class MapviewActivity: ComponentActivity() {
 
 @Composable
 fun RouteInfoView(
-    routeInfo: RouteInfo
+    routeInfo: RouteInfo?
 ) {
     Column {
-        Text(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp),
-            fontSize = 20.sp,
-            text = "시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60)
-        )
-        Text(
-            modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp),
-            text = "거리: %,.1fkm".format(routeInfo.routeDistance / 1000f),
-            fontSize = 20.sp
-        )
+        if (routeInfo != null) {
+            Text(
+                modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+                fontSize = 20.sp,
+                text = "시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60)
+            )
+            Text(
+                modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp),
+                text = "거리: %,.1fkm".format(routeInfo.routeDistance / 1000f),
+                fontSize = 20.sp
+            )
+        } else {
+            Text(
+                modifier = Modifier.padding(all = 20.dp),
+                text = "경로 시간/거리 정보를 불러오지 못했습니다.",
+                fontSize = 20.sp
+            )
+        }
     }
 }
 
