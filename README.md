@@ -41,7 +41,8 @@ API 호출을 위한 `Retrofit2` 인스턴스를 관리하는 `ApiUtil` 및 디�
 - `com/yong/km_assignment/ui/theme` : 애플리케이션 전역의 Theme 소스코드가 위치합니다. Color 등의 속성을 정의하였습니다.
 - `com/yong/km_assignment/util` : 각종 Util 클래스가 위치합니다.
 
-## Directory Structure [Screenshots / Release]
+## Directory Structure [Release / Screenshots]
+- `Release/` : 빌드된 APK 파일이 저장된 디렉토리입니다. Release 키로 Sign 된 APK 파일이 존재합니다.
 - `Screenshots/` : 스크린샷이 저장된 디렉토리입니다.
 	- `app_1_list.png` : MainAcitivity로, 전체 경로 목록 조회 화면입니다.
 	- `app_2_detail.png` : MapviewActivity로, 특정 경로의 상세 정보 조회 화면입니다.
