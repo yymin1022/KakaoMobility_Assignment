@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.mapview.MapviewActivity
@@ -32,19 +35,43 @@ class MainActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KakaoMobility_AssignmentTheme {
-                val routeList = viewModel.routeList.observeAsState()
+                val routeListLoaded = viewModel.routeListLoaded.observeAsState()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    routeList.value?.let {
-                        RouteList(
-                            routeList = it,
-                            modifier = Modifier.padding(innerPadding),
-                            onRouteItemClick = { routeFrom, routeTo ->
-                                val intent = Intent(applicationContext, MapviewActivity::class.java)
-                                intent.putExtra("routeFrom", routeFrom)
-                                intent.putExtra("routeTo", routeTo)
-                                startActivity(intent)
+                    routeListLoaded.value.let {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            if (it == true) {
+                                val routeList = viewModel.routeList
+                                if (routeList != null) {
+                                    RouteList(
+                                        routeList = routeList,
+                                        modifier = Modifier.padding(innerPadding),
+                                        onRouteItemClick = { routeFrom, routeTo ->
+                                            val intent = Intent(
+                                                applicationContext,
+                                                MapviewActivity::class.java
+                                            )
+                                            intent.putExtra("routeFrom", routeFrom)
+                                            intent.putExtra("routeTo", routeTo)
+                                            startActivity(intent)
+                                        }
+                                    )
+                                } else{
+                                    Text(
+                                        modifier = Modifier.align(Alignment.Center),
+                                        fontSize = 20.sp,
+                                        text = "경로 목록을 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
+                                    )
+                                }
+                            } else {
+                                Text(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    fontSize = 20.sp,
+                                    text = "경로 목록을 불러오는 중..."
+                                )
                             }
-                        )
+                        }
                     }
                 }
             }

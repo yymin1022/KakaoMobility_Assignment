@@ -10,15 +10,25 @@ import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
     private val _repositoryList = RouteListRepository()
-    private val _routeList: MutableLiveData<RouteList> = MutableLiveData()
-    val routeList: LiveData<RouteList> = _routeList
+    private val _routeListLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
+    var routeList: RouteList? = null
+    val routeListLoaded: LiveData<Boolean> = _routeListLoaded
+    var errCode: Int = 0
+    var errMessage = "Success"
 
     fun getRouteList() {
         viewModelScope.launch {
             _repositoryList.getRouteList().let {
-                if(it.body() != null) {
-                    _routeList.postValue(it.body())
+                routeList = it.body()
+                if(it.body() == null) {
+                    errCode = it.code()
+                    errMessage = when(errCode) {
+                        404 -> "Not Found"
+                        500 -> "Server Error"
+                        else -> "Unknown Error"
+                    }
                 }
+                _routeListLoaded.postValue(true)
             }
         }
     }
