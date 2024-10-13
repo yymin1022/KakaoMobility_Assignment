@@ -52,7 +52,7 @@ API 서버의 호출은 `Retrofit2` 라이브러리를 기반으로 이루어지
 API 호출을 위한 `Retrofit2` 인스턴스를 관리하는 `ApiUtil` 및 디버깅 로그를 위한 `LogUtil`, 네트워크 상태 확인을 위한 `NetworkUtil`은 Singletone 형식으로 정의되어 소스코드에서 활용됩니다.
 
 ## Screenshots
-<div style="display: flex; flex-direction: row">
+<div style="display: flex; flex-direction: row; justify-content: space-evenly">
 	<img src="readme_image/app_1.png" width="30%">
 	<img src="readme_image/app_2.png" width="30%">
 	<img src="readme_image/app_2.png" width="30%">
