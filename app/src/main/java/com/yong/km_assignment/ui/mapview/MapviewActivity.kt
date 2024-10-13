@@ -1,7 +1,6 @@
 package com.yong.km_assignment.ui.mapview
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -44,6 +43,7 @@ import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
 import com.yong.km_assignment.ui.theme.*
+import com.yong.km_assignment.util.LogUtil.LogD
 
 class MapviewActivity: ComponentActivity() {
     private val viewModel: MapviewViewModel by viewModels()
@@ -64,7 +64,6 @@ class MapviewActivity: ComponentActivity() {
                             if (routeDetail != null) {
                                 KakaoMapView(
                                     routeDetail = routeDetail,
-                                    routeInfo = routeInfo.value,
                                     modifier = Modifier
                                 )
                                 Card(
@@ -130,26 +129,24 @@ fun RouteInfoView(
 @Composable
 fun KakaoMapView(
     routeDetail: List<RouteDetail>,
-    routeInfo: RouteInfo?,
     modifier: Modifier = Modifier
 ) {
-    Log.d("MapView", "${routeInfo?.routeTime} / ${routeInfo?.routeDistance}")
     AndroidView(
         factory = { context ->
             val mapView = MapView(context)
             mapView.start(
                 object: MapLifeCycleCallback() {
                     override fun onMapDestroy() {
-                        Log.d("KakaoMapView", "Map Destroyed")
+                        LogD("KakaoMapView", "Map Destroyed")
                     }
 
                     override fun onMapError(error: Exception) {
-                        Log.e("KakaoMapView", "Map Error: ${error.message}")
+                        LogD("KakaoMapView", "Map Error: ${error.message}")
                     }
                 },
                 object: KakaoMapReadyCallback() {
                     override fun onMapReady(kakaoMap: KakaoMap) {
-                        Log.d("KakaoMapView", "Map is Ready")
+                        LogD("KakaoMapView", "Map is Ready")
 
                         addRouteLabelView(kakaoMap, routeDetail)
                         setKakaoMapCameraView(kakaoMap, routeDetail)
