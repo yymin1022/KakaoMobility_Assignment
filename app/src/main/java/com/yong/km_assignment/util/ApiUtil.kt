@@ -25,12 +25,12 @@ object ApiUtil {
     private fun getConverterFactory(): Converter.Factory {
         return GsonConverterFactory.create()
     }
-}
 
-class AuthInterceptor: Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val requestBuilder = original.newBuilder().header("Authorization", BuildConfig.API_KEY)
-        return chain.proceed(requestBuilder.build())
+    class AuthInterceptor: Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val original = chain.request()
+            val requestBuilder = original.newBuilder().header("Authorization", BuildConfig.API_KEY)
+            return chain.proceed(requestBuilder.build())
+        }
     }
 }
