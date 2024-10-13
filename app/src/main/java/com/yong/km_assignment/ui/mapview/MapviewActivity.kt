@@ -55,25 +55,38 @@ class MapviewActivity: ComponentActivity() {
         setContent {
             KakaoMobility_AssignmentTheme {
                 val routeDetail = viewModel.routeDetail.observeAsState()
+                val routeDetailLoaded = viewModel.routeDetailLoaded.observeAsState()
                 val routeInfo = viewModel.routeInfo.observeAsState()
-                routeDetail.value.let { routeDetailData ->
-                    if(routeDetailData != null) {
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            KakaoMapView(
-                                routeDetail = routeDetailData,
-                                routeInfo = routeInfo.value,
-                                modifier = Modifier
-                            )
-                            Card(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp, vertical = 50.dp)
-                            ) {
-                                RouteInfoView(routeInfo = routeInfo.value!!)
+                routeDetail.value.let {
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        if (routeDetailLoaded.value == true) {
+                            if (it != null) {
+                                KakaoMapView(
+                                    routeDetail = it,
+                                    routeInfo = routeInfo.value,
+                                    modifier = Modifier
+                                )
+                                Card(
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 20.dp, vertical = 50.dp)
+                                ) {
+                                    RouteInfoView(routeInfo = routeInfo.value!!)
+                                }
+                            } else {
+                                Text(
+                                    fontSize = 20.sp,
+                                    text = "경로 정보를 불러오지 못했습니다."
+                                )
                             }
+                        } else {
+                            Text(
+                                fontSize = 20.sp,
+                                text = "경로 정보를 불러오는 중..."
+                            )
                         }
                     }
                 }
@@ -84,6 +97,24 @@ class MapviewActivity: ComponentActivity() {
         val routeTo = intent.getStringExtra("routeTo") ?: ""
         viewModel.getRouteDetail(routeFrom, routeTo)
         viewModel.getRouteInfo(routeFrom, routeTo)
+    }
+}
+
+@Composable
+fun RouteInfoView(
+    routeInfo: RouteInfo
+) {
+    Column {
+        Text(
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+            fontSize = 20.sp,
+            text = "시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60)
+        )
+        Text(
+            modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp),
+            text = "거리: %,.1fkm".format(routeInfo.routeDistance / 1000f),
+            fontSize = 20.sp
+        )
     }
 }
 
@@ -122,24 +153,6 @@ fun KakaoMapView(
         },
         modifier = modifier.fillMaxSize()
     )
-}
-
-@Composable
-fun RouteInfoView(
-    routeInfo: RouteInfo
-) {
-    Column {
-        Text(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp),
-            text = "시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60),
-            fontSize = 20.sp
-        )
-        Text(
-            modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp),
-            text = "거리: %,.1fkm".format(routeInfo.routeDistance / 1000f),
-            fontSize = 20.sp
-        )
-    }
 }
 
 fun addRouteLabelView(
