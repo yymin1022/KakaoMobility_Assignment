@@ -1,4 +1,4 @@
-# 카카오모빌리티 신입채용 2차과제
+# 카카오모빌리티 주니어 개발자 Android Engineer 과제
 
 ## Project Structure
 - Activity
