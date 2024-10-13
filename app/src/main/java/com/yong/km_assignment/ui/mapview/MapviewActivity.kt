@@ -40,6 +40,7 @@ import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
 import com.kakao.vectormap.route.RouteLineStyles
 import com.kakao.vectormap.route.RouteLineStylesSet
+import com.yong.km_assignment.R
 import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
@@ -189,20 +190,23 @@ fun addRouteLabelView(
     kakaoMap: KakaoMap,
     routeDetail: List<RouteDetail>
 ) {
-    val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
-    val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
-    val labelStyles = kakaoMap.labelManager!!.addLabelStyles(LabelStyles.from(LabelStyle.from(
-        LabelTextStyle.from(30, Color.Black.toArgb()))))
-    val labelOptionsFrom = LabelOptions.from(LatLng.from(latlngFrom[1].toDouble(), latlngFrom[0].toDouble())).let {
-        it.setStyles(labelStyles)
-        it.setTexts(LabelTextBuilder().setTexts("출발"))
-    }
-    val labelOptionsTo = LabelOptions.from(LatLng.from(latlngTo[1].toDouble(), latlngTo[0].toDouble())).let {
-        it.setStyles(labelStyles)
-        it.setTexts(LabelTextBuilder().setTexts("도착"))
-    }
     kakaoMap.labelManager!!.layer?.let {
+        val latlngFrom = routeDetail.first().routePointList.split(" ")[0].split(",")
+        val labelStylesFrom = kakaoMap.labelManager!!.addLabelStyles(LabelStyles.from(
+            LabelStyle.from(R.drawable.ic_marker_from)))
+        val labelOptionsFrom = LabelOptions.from(LatLng.from(latlngFrom[1].toDouble(), latlngFrom[0].toDouble())).let {
+            it.setStyles(labelStylesFrom)
+            it.setTexts(LabelTextBuilder().setTexts("출발"))
+        }
         it.addLabel(labelOptionsFrom)
+
+        val latlngTo = routeDetail.last().routePointList.split(" ")[0].split(",")
+        val labelStylesTo = kakaoMap.labelManager!!.addLabelStyles(LabelStyles.from(
+            LabelStyle.from(R.drawable.ic_marker_to)))
+        val labelOptionsTo = LabelOptions.from(LatLng.from(latlngTo[1].toDouble(), latlngTo[0].toDouble())).let {
+            it.setStyles(labelStylesTo)
+            it.setTexts(LabelTextBuilder().setTexts("도착"))
+        }
         it.addLabel(labelOptionsTo)
     }
 }
