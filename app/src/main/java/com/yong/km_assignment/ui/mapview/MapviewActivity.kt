@@ -6,17 +6,25 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapGravity
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraAnimation
@@ -27,12 +35,6 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.kakao.vectormap.label.LabelTextStyle
-import com.kakao.vectormap.mapwidget.MapWidgetOptions
-import com.kakao.vectormap.mapwidget.component.GuiLayout
-import com.kakao.vectormap.mapwidget.component.GuiText
-import com.kakao.vectormap.mapwidget.component.Horizontal
-import com.kakao.vectormap.mapwidget.component.Orientation
-import com.kakao.vectormap.mapwidget.component.Vertical
 import com.kakao.vectormap.route.RouteLineOptions
 import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
@@ -41,12 +43,7 @@ import com.kakao.vectormap.route.RouteLineStylesSet
 import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
-import com.yong.km_assignment.ui.theme.RouteBlock
-import com.yong.km_assignment.ui.theme.RouteDelay
-import com.yong.km_assignment.ui.theme.RouteJam
-import com.yong.km_assignment.ui.theme.RouteNormal
-import com.yong.km_assignment.ui.theme.RouteSlow
-import com.yong.km_assignment.ui.theme.RouteUnknown
+import com.yong.km_assignment.ui.theme.*
 
 
 class MapviewActivity: ComponentActivity() {
@@ -59,8 +56,26 @@ class MapviewActivity: ComponentActivity() {
             KakaoMobility_AssignmentTheme {
                 val routeDetail = viewModel.routeDetail.observeAsState()
                 val routeInfo = viewModel.routeInfo.observeAsState()
-                routeDetail.value?.let {
-                    KakaoMapView(routeDetail = it, routeInfo = routeInfo.value, modifier = Modifier)
+                routeDetail.value.let { routeDetailData ->
+                    if(routeDetailData != null) {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            KakaoMapView(
+                                routeDetail = routeDetailData,
+                                routeInfo = routeInfo.value,
+                                modifier = Modifier
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp, vertical = 50.dp)
+                            ) {
+                                RouteInfoView(routeInfo = routeInfo.value!!)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -96,7 +111,6 @@ fun KakaoMapView(
                     override fun onMapReady(kakaoMap: KakaoMap) {
                         Log.d("KakaoMapView", "Map is Ready")
 
-                        addRouteInfoView(kakaoMap, routeInfo!!)
                         addRouteLabelView(kakaoMap, routeDetail)
                         setKakaoMapCameraView(kakaoMap, routeDetail)
                         setKakaoMapRouteLine(kakaoMap, routeDetail)
@@ -110,29 +124,21 @@ fun KakaoMapView(
     )
 }
 
-fun addRouteInfoView(
-    kakaoMap: KakaoMap,
+@Composable
+fun RouteInfoView(
     routeInfo: RouteInfo
 ) {
-    val widgetLayout = GuiLayout(Orientation.Vertical)
-    widgetLayout.setAlign(Vertical.Center, Horizontal.Left)
-    widgetLayout.setPadding(50, 50, 50, 50)
-
-    val widgetTextTime = GuiText("시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60))
-    widgetTextTime.setAlign(Vertical.Center, Horizontal.Left)
-    widgetTextTime.setTextSize(40)
-    widgetLayout.addView(widgetTextTime)
-    val widgetTextDistance = GuiText("거리: %,.1fkm".format(routeInfo.routeDistance / 1000f))
-    widgetTextDistance.setAlign(Vertical.Center, Horizontal.Left)
-    widgetTextDistance.setTextSize(40)
-    widgetLayout.addView(widgetTextDistance)
-
-    val widgetOption = MapWidgetOptions.from("RouteInfo")
-    widgetOption.setRootView(widgetLayout)
-
-    kakaoMap.mapWidgetManager!!.mapWidgetLayer.let {
-        it.addMapWidget(widgetOption)
-        it.getMapWidget("RouteInfo")?.setPosition(MapGravity.BOTTOM or MapGravity.LEFT, 0f, 0f)
+    Column {
+        Text(
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp),
+            text = "시간: %d시간 %d분".format(routeInfo.routeTime / 3600, (routeInfo.routeTime % 3600) / 60),
+            fontSize = 20.sp
+        )
+        Text(
+            modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 20.dp),
+            text = "거리: %,.1fkm".format(routeInfo.routeDistance / 1000f),
+            fontSize = 20.sp
+        )
     }
 }
 
