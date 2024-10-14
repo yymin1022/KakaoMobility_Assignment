@@ -51,6 +51,7 @@ class MapviewActivity: ComponentActivity() {
                     val routeDetailLoaded = viewModel.routeDetailLoaded.collectAsState()
                     val routeInfo = viewModel.routeInfo.collectAsState()
                     viewModel.getRouteDetail(routeFrom, routeTo)
+                    viewModel.getRouteInfo(routeFrom, routeTo)
                     routeDetailLoaded.value.let {
                         Box(
                             modifier = Modifier
@@ -64,15 +65,13 @@ class MapviewActivity: ComponentActivity() {
                                         routeDetail = routeDetail,
                                         modifier = Modifier
                                     )
-                                    Card(
+                                    RouteInfoView(
                                         modifier = Modifier
                                             .align(Alignment.BottomCenter)
                                             .fillMaxWidth()
-                                            .padding(horizontal = 20.dp, vertical = 50.dp)
-                                    ) {
-                                        viewModel.getRouteInfo(routeFrom, routeTo)
-                                        RouteInfoView(routeInfo = routeInfo.value)
-                                    }
+                                            .padding(horizontal = 20.dp, vertical = 50.dp),
+                                        routeInfo = routeInfo.value
+                                    )
                                 } else {
                                     StatusTextView(
                                         modifier = Modifier.align(Alignment.Center),
