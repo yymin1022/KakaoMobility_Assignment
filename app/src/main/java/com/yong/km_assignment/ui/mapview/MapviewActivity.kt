@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yong.km_assignment.R
 import com.yong.km_assignment.ui.common.StatusTextView
 import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
 import com.yong.km_assignment.util.NetworkUtil
@@ -38,7 +39,7 @@ class MapviewActivity: ComponentActivity() {
                         ) {
                             StatusTextView(
                                 modifier = Modifier.align(Alignment.Center),
-                                msg = "네트워크 연결을 확인해주세요."
+                                msg = getString(R.string.mapview_error_network)
                             )
                         }
                         return@Scaffold
@@ -58,7 +59,7 @@ class MapviewActivity: ComponentActivity() {
                             is UIState.Loading -> {
                                 StatusTextView(
                                     modifier = Modifier.align(Alignment.Center),
-                                    msg = "경로 정보를 불러오는 중..."
+                                    msg = getString(R.string.mapview_loading)
                                 )
                             }
                             is UIState.Success -> {
@@ -68,6 +69,7 @@ class MapviewActivity: ComponentActivity() {
                                 )
                                 RouteInfoView(
                                     routeInfo = state.routeInfo,
+                                    context = applicationContext,
                                     modifier = Modifier
                                         .align(Alignment.BottomCenter)
                                         .fillMaxWidth()
@@ -77,7 +79,7 @@ class MapviewActivity: ComponentActivity() {
                             is UIState.Error -> {
                                 StatusTextView(
                                     modifier = Modifier.align(Alignment.Center),
-                                    msg = "경로 정보를 불러오지 못했습니다.\n오류코드: ${state.errorCode} (${state.errorMessage})"
+                                    msg = getString(R.string.mapview_error_api).format(state.errorCode, state.errorMessage)
                                 )
                             }
                         }
