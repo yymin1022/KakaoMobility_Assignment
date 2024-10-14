@@ -64,6 +64,9 @@ API 호출을 위한 `Retrofit2` 인스턴스를 관리하는 `ApiUtil` 및 디�
 - `android.permission.ACCESS_NETWORK_STATE` : 네트워크 연경 상태에 따른 예외처리에 사용됩니다.
 - `android.permission.INTERNET` : API 서버와의 통신을 위해 사용됩니다.
 
-## 개발자
+## Test Environment
+PC - MacBook Pro (2023), M2 Pro / 16GB, macOS Sequoia 15.0.1
+Phone - Google Pixel 6 Pro, Android 15
 
+## 개발자
 [유용민](https://github.com/yymin1022) | 중앙대학교 소프트웨어학부 (2025. 02. 졸업예정)
