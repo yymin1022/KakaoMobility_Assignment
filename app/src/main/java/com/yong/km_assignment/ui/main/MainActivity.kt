@@ -17,7 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -52,7 +52,7 @@ class MainActivity: ComponentActivity() {
                         return@Scaffold
                     }
 
-                    val routeListLoaded = viewModel.routeListLoaded.observeAsState()
+                    val routeListLoaded = viewModel.routeListLoaded.collectAsState()
                     viewModel.getRouteList()
                     routeListLoaded.value.let {
                         Box(
@@ -60,7 +60,7 @@ class MainActivity: ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         ) {
-                            if (it == true) {
+                            if (it) {
                                 val routeList = viewModel.routeList
                                 if (routeList != null) {
                                     RouteList(

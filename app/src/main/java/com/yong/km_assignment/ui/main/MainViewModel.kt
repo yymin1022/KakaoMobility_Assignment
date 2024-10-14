@@ -1,18 +1,18 @@
 package com.yong.km_assignment.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.repository.RouteListRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
     private val _repositoryList = RouteListRepository()
-    private val _routeListLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _routeListLoaded: MutableStateFlow<Boolean> = MutableStateFlow(false)
     var routeList: RouteList? = null
-    val routeListLoaded: LiveData<Boolean> = _routeListLoaded
+    val routeListLoaded: StateFlow<Boolean> = _routeListLoaded
     var errCode: Int = 0
     var errMessage = "Success"
 
@@ -28,7 +28,7 @@ class MainViewModel: ViewModel() {
                         else -> "Unknown Error"
                     }
                 }
-                _routeListLoaded.postValue(true)
+                _routeListLoaded.value = true
             }
         }
     }
