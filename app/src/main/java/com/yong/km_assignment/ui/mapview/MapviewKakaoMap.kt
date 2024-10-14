@@ -29,6 +29,7 @@ import com.yong.km_assignment.ui.theme.RouteDelay
 import com.yong.km_assignment.ui.theme.RouteJam
 import com.yong.km_assignment.ui.theme.RouteNormal
 import com.yong.km_assignment.ui.theme.RouteSlow
+import com.yong.km_assignment.ui.theme.RouteStroke
 import com.yong.km_assignment.ui.theme.RouteUnknown
 import com.yong.km_assignment.util.LogUtil.LogD
 
@@ -112,12 +113,12 @@ fun setKakaoMapRouteLine(
     val mapLayer = kakaoMap.routeLineManager!!.layer
     val routeStyleNormal: RouteLineStylesSet = RouteLineStylesSet.from(
         "RouteLine",
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteUnknown.toArgb())),
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteJam.toArgb())),
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteDelay.toArgb())),
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteSlow.toArgb())),
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteNormal.toArgb())),
-        RouteLineStyles.from(RouteLineStyle.from(15f, RouteBlock.toArgb()))
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteUnknown.toArgb(), 2f, RouteStroke.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteJam.toArgb(), 2f, RouteStroke.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteDelay.toArgb(), 2f, RouteStroke.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteSlow.toArgb(), 2f, RouteStroke.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteNormal.toArgb(), 2f, RouteStroke.toArgb())),
+        RouteLineStyles.from(RouteLineStyle.from(15f, RouteBlock.toArgb(), 2f, RouteStroke.toArgb())),
     )
 
     routeDetail.forEach { routeDetailItem ->
