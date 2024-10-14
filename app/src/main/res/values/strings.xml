@@ -3,7 +3,7 @@
 
     <string name="main_error_api">경로 목록을 불러오지 못했습니다.\n오류코드: %d (%s)</string>
     <string name="main_error_network">네트워크 연결을 확인해주세요.</string>
-    <string name="main_list_item_from">출발지: </string>
-    <string name="main_lisT_item_to">도착지: </string>
-    <string name="main_loading">경로 목록을 불러오는 중...</string>
+    <string name="main_list_item_from">출발지: %s</string>
+    <string name="main_list_item_to">도착지: %s</string>
+    <string name="main_loading">경로 목록을 불러오는 중…</string>
 </resources>
