@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.common.StatusTextView
@@ -54,42 +53,24 @@ class MainActivity: ComponentActivity() {
 
                     val routeListLoaded = viewModel.routeListLoaded.collectAsState()
                     viewModel.getRouteList()
-                    routeListLoaded.value.let {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(innerPadding)
-                        ) {
-                            if (it) {
-                                val routeList = viewModel.routeList
-                                if (routeList != null) {
-                                    RouteList(
-                                        routeList = routeList,
-                                        modifier = Modifier.fillMaxSize(),
-                                        onRouteItemClick = { routeFrom, routeTo ->
-                                            val intent = Intent(
-                                                applicationContext,
-                                                MapviewActivity::class.java
-                                            )
-                                            intent.putExtra("routeFrom", routeFrom)
-                                            intent.putExtra("routeTo", routeTo)
-                                            startActivity(intent)
-                                        }
-                                    )
-                                } else{
-                                    StatusTextView(
-                                        modifier = Modifier.align(Alignment.Center),
-                                        msg = "경로 목록을 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
-                                    )
-                                }
-                            } else {
-                                StatusTextView(
-                                    modifier = Modifier.align(Alignment.Center),
-                                    msg = "경로 목록을 불러오는 중..."
-                                )
-                            }
+                    RouteListView(
+                        routeList = viewModel.routeList,
+                        routeListLoaded = routeListLoaded.value,
+                        errCode = viewModel.errCode,
+                        errMessage = viewModel.errMessage,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        onRouteItemClick = { routeFrom, routeTo ->
+                            val intent = Intent(
+                                applicationContext,
+                                MapviewActivity::class.java
+                            )
+                            intent.putExtra("routeFrom", routeFrom)
+                            intent.putExtra("routeTo", routeTo)
+                            startActivity(intent)
                         }
-                    }
+                    )
                 }
             }
         }
@@ -97,16 +78,38 @@ class MainActivity: ComponentActivity() {
 }
 
 @Composable
-fun RouteList(
-    routeList: RouteList,
-    modifier: Modifier = Modifier,
+fun RouteListView(
+    routeList: RouteList?,
+    routeListLoaded: Boolean,
+    errCode: Int,
+    errMessage: String,
+    modifier: Modifier,
     onRouteItemClick: (String, String) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize()
+    Box(
+        modifier = modifier
+            .fillMaxSize()
     ) {
-        items(routeList.routeList) { route ->
-            RouteItem(route = route, onClick = onRouteItemClick)
+        if (routeListLoaded) {
+            if (routeList != null) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(routeList.routeList) { route ->
+                        RouteItem(route = route, onClick = onRouteItemClick)
+                    }
+                }
+            } else{
+                StatusTextView(
+                    modifier = Modifier.align(Alignment.Center),
+                    msg = "경로 목록을 불러오지 못했습니다.\n오류코드: $errCode ($errMessage)"
+                )
+            }
+        } else {
+            StatusTextView(
+                modifier = Modifier.align(Alignment.Center),
+                msg = "경로 목록을 불러오는 중..."
+            )
         }
     }
 }
