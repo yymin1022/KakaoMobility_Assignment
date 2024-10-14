@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.yong.km_assignment.R
 import com.yong.km_assignment.ui.common.StatusTextView
 import com.yong.km_assignment.ui.mapview.MapviewActivity
 import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
@@ -35,7 +36,7 @@ class MainActivity: ComponentActivity() {
                         ) {
                             StatusTextView(
                                 modifier = Modifier.align(Alignment.Center),
-                                msg = "네트워크 연결을 확인해주세요."
+                                msg = getString(R.string.main_error_network)
                             )
                         }
                         return@Scaffold
@@ -48,6 +49,7 @@ class MainActivity: ComponentActivity() {
                         routeListLoaded = routeListLoaded.value,
                         errCode = viewModel.errCode,
                         errMessage = viewModel.errMessage,
+                        context = applicationContext,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding),

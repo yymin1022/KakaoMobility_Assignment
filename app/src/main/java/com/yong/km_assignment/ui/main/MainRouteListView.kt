@@ -1,5 +1,6 @@
 package com.yong.km_assignment.ui.main
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yong.km_assignment.R
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.common.StatusTextView
+import java.util.Locale
 
 @Composable
 fun RouteListView(
@@ -23,6 +26,7 @@ fun RouteListView(
     routeListLoaded: Boolean,
     errCode: Int,
     errMessage: String,
+    context: Context,
     modifier: Modifier,
     onRouteItemClick: (String, String) -> Unit
 ) {
@@ -36,19 +40,19 @@ fun RouteListView(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(routeList.routeList) { route ->
-                        RouteListItem(route = route, onClick = onRouteItemClick)
+                        RouteListItem(route = route, context = context, onClick = onRouteItemClick)
                     }
                 }
             } else{
                 StatusTextView(
                     modifier = Modifier.align(Alignment.Center),
-                    msg = "경로 목록을 불러오지 못했습니다.\n오류코드: $errCode ($errMessage)"
+                    msg = context.getString(R.string.main_error_api).format(Locale.getDefault(), errCode, errMessage)
                 )
             }
         } else {
             StatusTextView(
                 modifier = Modifier.align(Alignment.Center),
-                msg = "경로 목록을 불러오는 중..."
+                msg = context.getString(R.string.main_loading)
             )
         }
     }
@@ -57,6 +61,7 @@ fun RouteListView(
 @Composable
 fun RouteListItem(
     route: RouteListItem,
+    context: Context,
     onClick: (String, String) -> Unit
 ) {
     Column(
@@ -65,7 +70,7 @@ fun RouteListItem(
             .clickable { onClick(route.routeFrom, route.routeTo) }
             .padding(16.dp)
     ) {
-        Text(text = "출발지: ${route.routeFrom}")
-        Text(text = "도착지: ${route.routeTo}")
+        Text(text = context.getString(R.string.main_list_item_from).format(route.routeFrom))
+        Text(text = context.getString(R.string.main_list_item_to).format(route.routeTo))
     }
 }
