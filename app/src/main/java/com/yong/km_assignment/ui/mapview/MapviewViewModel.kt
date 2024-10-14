@@ -2,8 +2,6 @@ package com.yong.km_assignment.ui.mapview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yong.km_assignment.data.model.RouteDetail
-import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.data.repository.RouteDetailRepository
 import com.yong.km_assignment.data.repository.RouteInfoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,49 +11,32 @@ import kotlinx.coroutines.launch
 class MapviewViewModel: ViewModel() {
     private val _repositoryDetail = RouteDetailRepository()
     private val _repositoryInfo = RouteInfoRepository()
-    private val _routeDetailLoaded: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _routeInfo: MutableStateFlow<RouteInfo?> = MutableStateFlow(null)
-    var routeDetail: List<RouteDetail>? = listOf()
-    val routeDetailLoaded: StateFlow<Boolean> = _routeDetailLoaded
-    val routeInfo: StateFlow<RouteInfo?> = _routeInfo
-    var errCode: Int = 0
-    var errMessage = "Success"
 
-    fun getRouteDetail(
-        routeFrom: String,
-        routeTo: String
-    ) {
+    private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Loading)
+    val uiState: StateFlow<UIState> = _uiState
+
+    fun getRouteDetailAndInfo(routeFrom: String, routeTo: String) {
         viewModelScope.launch {
-            _repositoryDetail.getRouteDetail(routeFrom, routeTo).let {
-                routeDetail = it.body()
-                if(it.body() == null) {
-                    errCode = it.code()
-                    errMessage = when(errCode) {
+            try {
+                val routeDetailResponse = _repositoryDetail.getRouteDetail(routeFrom, routeTo)
+                val routeInfoResponse = _repositoryInfo.getRouteInfo(routeFrom, routeTo)
+
+                val routeDetail = routeDetailResponse.body()
+                val routeInfo = routeInfoResponse.body()
+
+                if (routeDetail == null || routeInfo == null) {
+                    val errorCode = routeDetailResponse.code().takeIf { routeDetail == null } ?: routeInfoResponse.code()
+                    val errorMessage = when (errorCode) {
                         404 -> "Not Found"
                         500 -> "Server Error"
                         else -> "Unknown Error"
                     }
+                    _uiState.value = UIState.Error(errorCode, errorMessage)
+                } else {
+                    _uiState.value = UIState.Success(routeDetail, routeInfo)
                 }
-                _routeDetailLoaded.value = true
-            }
-        }
-    }
-
-    fun getRouteInfo(
-        routeFrom: String,
-        routeTo: String
-    ) {
-        viewModelScope.launch {
-            _repositoryInfo.getRouteInfo(routeFrom, routeTo).let {
-                _routeInfo.value = it.body()
-                if(it.body() == null) {
-                    errCode = it.code()
-                    errMessage = when(errCode) {
-                        404 -> "Not Found"
-                        500 -> "Server Error"
-                        else -> "Unknown Error"
-                    }
-                }
+            } catch (e: Exception) {
+                _uiState.value = UIState.Error(-1, e.message ?: "Unknown Error")
             }
         }
     }

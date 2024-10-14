@@ -14,8 +14,6 @@ import com.yong.km_assignment.ui.common.StatusTextView
 @Composable
 fun RouteInfoView(
     routeInfo: RouteInfo?,
-    errCode: Int,
-    errMessage: String,
     modifier: Modifier
 ) {
     Card(
@@ -39,7 +37,7 @@ fun RouteInfoView(
             } else {
                 StatusTextView(
                     modifier = Modifier.padding(all = 20.dp),
-                    msg = "경로 시간/거리 정보를 불러오지 못했습니다.\n오류코드: $errCode ($errMessage)",
+                    msg = "경로 시간/거리 정보를 불러오지 못했습니다.",
                 )
             }
         }
