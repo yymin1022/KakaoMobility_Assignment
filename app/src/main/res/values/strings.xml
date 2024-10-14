@@ -6,4 +6,11 @@
     <string name="main_list_item_from">출발지: %s</string>
     <string name="main_list_item_to">도착지: %s</string>
     <string name="main_loading">경로 목록을 불러오는 중…</string>
+
+    <string name="mapview_error_api">경로 정보를 불러오지 못했습니다.\n오류코드: %d (%s)</string>
+    <string name="mapview_error_info_api">경로 시간/거리 정보를 불러오지 못했습니다.</string>
+    <string name="mapview_error_network">네트워크 연결을 확인해주세요.</string>
+    <string name="mapview_info_distance">거리: %,.1fkm</string>
+    <string name="mapview_info_time">시간: %d시간 %d분</string>
+    <string name="mapview_loading">경로 목록을 불러오는 중…</string>
 </resources>
