@@ -38,6 +38,7 @@ fun MapviewKakaoMap(
     modifier: Modifier = Modifier
 ) {
     AndroidView(
+        modifier = modifier.fillMaxSize(),
         factory = { context ->
             val mapView = MapView(context)
             mapView.start(
@@ -62,8 +63,7 @@ fun MapviewKakaoMap(
             )
 
             return@AndroidView mapView
-        },
-        modifier = modifier.fillMaxSize()
+        }
     )
 }
 

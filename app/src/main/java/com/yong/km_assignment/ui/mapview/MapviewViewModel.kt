@@ -48,6 +48,14 @@ class MapviewViewModel: ViewModel() {
         viewModelScope.launch {
             _repositoryInfo.getRouteInfo(routeFrom, routeTo).let {
                 _routeInfo.value = it.body()
+                if(it.body() == null) {
+                    errCode = it.code()
+                    errMessage = when(errCode) {
+                        404 -> "Not Found"
+                        500 -> "Server Error"
+                        else -> "Unknown Error"
+                    }
+                }
             }
         }
     }

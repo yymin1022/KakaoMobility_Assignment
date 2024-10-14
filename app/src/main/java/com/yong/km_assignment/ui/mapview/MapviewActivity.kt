@@ -65,11 +65,13 @@ class MapviewActivity: ComponentActivity() {
                                         modifier = Modifier
                                     )
                                     RouteInfoView(
+                                        routeInfo = routeInfo.value,
+                                        errCode = viewModel.errCode,
+                                        errMessage = viewModel.errMessage,
                                         modifier = Modifier
                                             .align(Alignment.BottomCenter)
                                             .fillMaxWidth()
-                                            .padding(horizontal = 20.dp, vertical = 50.dp),
-                                        routeInfo = routeInfo.value
+                                            .padding(horizontal = 20.dp, vertical = 50.dp)
                                     )
                                 } else {
                                     StatusTextView(
