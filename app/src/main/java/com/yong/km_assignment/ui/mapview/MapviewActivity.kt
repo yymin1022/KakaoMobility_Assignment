@@ -41,6 +41,7 @@ import com.kakao.vectormap.route.RouteLineStylesSet
 import com.yong.km_assignment.R
 import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
+import com.yong.km_assignment.ui.common.StatusTextView
 import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
 import com.yong.km_assignment.ui.theme.*
 import com.yong.km_assignment.util.LogUtil.LogD
@@ -67,10 +68,9 @@ class MapviewActivity: ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         ) {
-                            Text(
+                            StatusTextView(
                                 modifier = Modifier.align(Alignment.Center),
-                                fontSize = 20.sp,
-                                text = "네트워크 연결을 확인해주세요."
+                                msg = "네트워크 연결을 확인해주세요."
                             )
                         }
                         return@Scaffold
@@ -102,17 +102,15 @@ class MapviewActivity: ComponentActivity() {
                                         RouteInfoView(routeInfo = routeInfo.value)
                                     }
                                 } else {
-                                    Text(
+                                    StatusTextView(
                                         modifier = Modifier.align(Alignment.Center),
-                                        fontSize = 20.sp,
-                                        text = "경로 정보를 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
+                                        msg = "경로 정보를 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
                                     )
                                 }
                             } else {
-                                Text(
+                                StatusTextView(
                                     modifier = Modifier.align(Alignment.Center),
-                                    fontSize = 20.sp,
-                                    text = "경로 정보를 불러오는 중..."
+                                    msg = "경로 정보를 불러오는 중..."
                                 )
                             }
                         }
@@ -140,10 +138,9 @@ fun RouteInfoView(
                 fontSize = 20.sp
             )
         } else {
-            Text(
+            StatusTextView(
                 modifier = Modifier.padding(all = 20.dp),
-                text = "경로 시간/거리 정보를 불러오지 못했습니다.",
-                fontSize = 20.sp
+                msg = "경로 시간/거리 정보를 불러오지 못했습니다.",
             )
         }
     }
