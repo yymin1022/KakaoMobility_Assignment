@@ -1,23 +1,23 @@
 package com.yong.km_assignment.ui.mapview
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
 import com.yong.km_assignment.data.repository.RouteDetailRepository
 import com.yong.km_assignment.data.repository.RouteInfoRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MapviewViewModel: ViewModel() {
     private val _repositoryDetail = RouteDetailRepository()
     private val _repositoryInfo = RouteInfoRepository()
-    private val _routeDetailLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val _routeInfo: MutableLiveData<RouteInfo?> = MutableLiveData()
+    private val _routeDetailLoaded: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _routeInfo: MutableStateFlow<RouteInfo?> = MutableStateFlow(null)
     var routeDetail: List<RouteDetail>? = listOf()
-    val routeDetailLoaded: LiveData<Boolean> = _routeDetailLoaded
-    val routeInfo: LiveData<RouteInfo?> = _routeInfo
+    val routeDetailLoaded: StateFlow<Boolean> = _routeDetailLoaded
+    val routeInfo: StateFlow<RouteInfo?> = _routeInfo
     var errCode: Int = 0
     var errMessage = "Success"
 
@@ -36,7 +36,7 @@ class MapviewViewModel: ViewModel() {
                         else -> "Unknown Error"
                     }
                 }
-                _routeDetailLoaded.postValue(true)
+                _routeDetailLoaded.value = true
             }
         }
     }
@@ -47,7 +47,7 @@ class MapviewViewModel: ViewModel() {
     ) {
         viewModelScope.launch {
             _repositoryInfo.getRouteInfo(routeFrom, routeTo).let {
-                _routeInfo.postValue(it.body())
+                _routeInfo.value = it.body()
             }
         }
     }
