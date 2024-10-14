@@ -96,7 +96,7 @@ fun RouteListView(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(routeList.routeList) { route ->
-                        RouteItem(route = route, onClick = onRouteItemClick)
+                        RouteListItem(route = route, onClick = onRouteItemClick)
                     }
                 }
             } else{
@@ -115,7 +115,7 @@ fun RouteListView(
 }
 
 @Composable
-fun RouteItem(
+fun RouteListItem(
     route: RouteListItem,
     onClick: (String, String) -> Unit
 ) {
