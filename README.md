@@ -25,7 +25,7 @@
 
 ## Architecture
 MVVM 및 Repository 패턴을 활용한 아키텍쳐를 적용하였습니다.<br/>
-각 Activity는 연동된 ViewModel을 통해 LiveData 형식으로 데이터를 구독해 State 기반의 UI 렌더링을 처리합니다.<br/>
+각 Activity는 연동된 ViewModel을 통해 StateFlow 형식으로 데이터를 구독해 State 기반의 UI 렌더링을 처리합니다.<br/>
 각 ViewModel은 지정된 Repository를 통해 API 서버로부터 데이터를 받아와 저장합니다.<br/>
 API 서버의 호출은 `Retrofit2` 라이브러리를 기반으로 이루어지며, Model Data Class 및 `ApiUtil`을 기반으로 데이터를 구성합니다. <br/>
 네트워크 상태 혹은 API 서버에서의 오류에 따른 처리는 내부적으로 이루어지며, UI상에 Text를 통해 전시됩니다.<br/>
@@ -36,8 +36,8 @@ API 호출을 위한 `Retrofit2` 인스턴스를 관리하는 `ApiUtil` 및 디�
 - `com/yong/km_assignment/data/api` : API 호출을 위한 `Retrofit2` 인터페이스가 위치합니다.
 - `com/yong/km_assignment/data/model` : 데이터 Model 클래스가 위치합니다.
 - `com/yong/km_assignment/data/repository` : 데이터 Repository 클래스가 위치합니다.
-- `com/yong/km_assignment/ui/main` : MainActivity 및 ViewModel 클래스가 위치합니다.
-- `com/yong/km_assignment/ui/mapview` : MapviewActivity 및 ViewModel 클래스가 위치합니다.
+- `com/yong/km_assignment/ui/main` : MainActivity Composable 및 ViewModel 클래스가 위치합니다.
+- `com/yong/km_assignment/ui/mapview` : MapviewActivity Composable 및 ViewModel 클래스가 위치합니다.
 - `com/yong/km_assignment/ui/theme` : 애플리케이션 전역의 Theme 소스코드가 위치합니다. Color 등의 속성을 정의하였습니다.
 - `com/yong/km_assignment/util` : 각종 Util 클래스가 위치합니다.
 
