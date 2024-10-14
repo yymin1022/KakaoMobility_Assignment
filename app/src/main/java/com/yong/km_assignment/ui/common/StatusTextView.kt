@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ErrorTextView(modifier: Modifier, msg: String) {
+fun StatusTextView(modifier: Modifier, msg: String) {
     Text(
         modifier = modifier,
         fontSize = 20.sp,
