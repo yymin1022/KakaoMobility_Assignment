@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
+import com.yong.km_assignment.ui.common.StatusTextView
 import com.yong.km_assignment.ui.mapview.MapviewActivity
 import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
 import com.yong.km_assignment.util.NetworkUtil
@@ -43,10 +44,9 @@ class MainActivity: ComponentActivity() {
                         Box(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            Text(
+                            StatusTextView(
                                 modifier = Modifier.align(Alignment.Center),
-                                fontSize = 20.sp,
-                                text = "네트워크 연결을 확인해주세요."
+                                msg = "네트워크 연결을 확인해주세요."
                             )
                         }
                         return@Scaffold
@@ -77,17 +77,15 @@ class MainActivity: ComponentActivity() {
                                         }
                                     )
                                 } else{
-                                    Text(
+                                    StatusTextView(
                                         modifier = Modifier.align(Alignment.Center),
-                                        fontSize = 20.sp,
-                                        text = "경로 목록을 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
+                                        msg = "경로 목록을 불러오지 못했습니다.\n오류코드: ${viewModel.errCode} (${viewModel.errMessage})"
                                     )
                                 }
                             } else {
-                                Text(
+                                StatusTextView(
                                     modifier = Modifier.align(Alignment.Center),
-                                    fontSize = 20.sp,
-                                    text = "경로 목록을 불러오는 중..."
+                                    msg = "경로 목록을 불러오는 중..."
                                 )
                             }
                         }
