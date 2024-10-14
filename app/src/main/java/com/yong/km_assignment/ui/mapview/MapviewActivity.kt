@@ -41,7 +41,7 @@ import com.kakao.vectormap.route.RouteLineStylesSet
 import com.yong.km_assignment.R
 import com.yong.km_assignment.data.model.RouteDetail
 import com.yong.km_assignment.data.model.RouteInfo
-import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
+import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
 import com.yong.km_assignment.ui.theme.*
 import com.yong.km_assignment.util.LogUtil.LogD
 import com.yong.km_assignment.util.NetworkUtil
@@ -57,7 +57,7 @@ class MapviewActivity: ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            KakaoMobility_AssignmentTheme {
+            KakaoMobilityAssignmentTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->

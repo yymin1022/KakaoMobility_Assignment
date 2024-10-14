@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.yong.km_assignment.data.model.RouteList
 import com.yong.km_assignment.data.model.RouteListItem
 import com.yong.km_assignment.ui.mapview.MapviewActivity
-import com.yong.km_assignment.ui.theme.KakaoMobility_AssignmentTheme
+import com.yong.km_assignment.ui.theme.KakaoMobilityAssignmentTheme
 import com.yong.km_assignment.util.NetworkUtil
 
 class MainActivity: ComponentActivity() {
@@ -35,7 +35,7 @@ class MainActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            KakaoMobility_AssignmentTheme {
+            KakaoMobilityAssignmentTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
