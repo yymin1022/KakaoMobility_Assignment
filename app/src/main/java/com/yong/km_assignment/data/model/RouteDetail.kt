@@ -34,12 +34,3 @@ data class RouteDetail(
         }
     }
 }
-
-enum class TrafficState {
-    TRAFFIC_UNKNOWN,
-    TRAFFIC_JAM,
-    TRAFFIC_DELAY,
-    TRAFFIC_SLOW,
-    TRAFFIC_NORMAL,
-    TRAFFIC_BLOCK
-}
